@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ember — Restaurant System</title>
+  <title>Young's Restaurant</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,7 +13,6 @@
       --parchment: #f0e8d8;
       --amber: #c8832a;
       --amber-dark: #9e6318;
-      --amber-light: #e8b96a;
       --charcoal: #1c1a17;
       --warm-gray: #6b6258;
       --warm-gray-light: #9c9088;
@@ -25,731 +24,268 @@
       --shadow-lg: 0 8px 40px rgba(28,26,23,0.16);
     }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--charcoal);
-      min-height: 100vh;
-    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; }
 
-    /* ── PAGES ── */
     .page { display: none; min-height: 100vh; }
     .page.active { display: flex; flex-direction: column; }
 
-    /* ── LOGIN PAGE ── */
+    /* LOGIN */
     #page-login {
-      align-items: center;
-      justify-content: center;
-      background: var(--charcoal);
-      position: relative;
-      overflow: hidden;
+      align-items: center; justify-content: center;
+      background: var(--charcoal); position: relative; overflow: hidden;
     }
-
     #page-login::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: radial-gradient(ellipse at 30% 60%, rgba(200,131,42,0.18) 0%, transparent 60%),
                   radial-gradient(ellipse at 80% 20%, rgba(200,131,42,0.10) 0%, transparent 50%);
     }
-
     .login-card {
-      position: relative;
-      background: var(--card-bg);
-      border-radius: 24px;
-      padding: 56px 52px;
-      width: 420px;
-      box-shadow: var(--shadow-lg);
-      animation: fadeUp 0.6s cubic-bezier(.16,1,.3,1) both;
+      position: relative; background: var(--card-bg); border-radius: 24px;
+      padding: 52px 48px; width: 400px; box-shadow: var(--shadow-lg);
+      animation: fadeUp 0.5s cubic-bezier(.16,1,.3,1) both;
     }
-
-    .login-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 36px;
-      font-weight: 700;
-      color: var(--charcoal);
-      text-align: center;
-      margin-bottom: 4px;
-    }
-
+    .login-logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--charcoal); text-align: center; margin-bottom: 4px; }
     .login-logo span { color: var(--amber); }
+    .login-sub { text-align: center; color: var(--warm-gray); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 36px; }
 
-    .login-sub {
-      text-align: center;
-      color: var(--warm-gray);
-      font-size: 13px;
-      font-weight: 300;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 40px;
-    }
-
-    /* ── GLOBAL INPUTS & BUTTONS ── */
-    label {
-      display: block;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--warm-gray);
-      margin-bottom: 6px;
-    }
-
+    label { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 6px; }
     input, select {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      color: var(--charcoal);
-      background: var(--cream);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--charcoal); background: var(--cream);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
     }
-
-    input:focus, select:focus {
-      border-color: var(--amber);
-      box-shadow: 0 0 0 3px rgba(200,131,42,0.12);
-    }
-
-    .field { margin-bottom: 18px; }
+    input:focus, select:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(200,131,42,0.12); }
+    .field { margin-bottom: 16px; }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 13px 24px;
-      border-radius: 10px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; border-radius: 10px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s;
     }
-
-    .btn-primary {
-      background: var(--amber);
-      color: white;
-      width: 100%;
-    }
-
+    .btn-primary { background: var(--amber); color: white; width: 100%; }
     .btn-primary:hover { background: var(--amber-dark); transform: translateY(-1px); }
-    .btn-primary:active { transform: translateY(0); }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--amber);
-      border: 1.5px solid var(--amber);
-    }
-
+    .btn-secondary { background: transparent; color: var(--amber); border: 1.5px solid var(--amber); }
     .btn-secondary:hover { background: rgba(200,131,42,0.08); }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--warm-gray);
-      border: 1.5px solid var(--border);
-    }
-
+    .btn-ghost { background: transparent; color: var(--warm-gray); border: 1.5px solid var(--border); }
     .btn-ghost:hover { border-color: var(--warm-gray); color: var(--charcoal); }
+    .btn-sm { padding: 8px 14px; font-size: 13px; }
 
-    .btn-danger {
-      background: transparent;
-      color: var(--error);
-      border: 1.5px solid rgba(184,80,80,0.3);
-      font-size: 13px;
-      padding: 8px 14px;
-    }
-
-    .btn-danger:hover { background: rgba(184,80,80,0.08); }
-
-    .btn-sm { padding: 8px 16px; font-size: 13px; }
-
-    /* ── TOAST ── */
     #toast {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      padding: 14px 20px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 500;
-      color: white;
-      z-index: 9999;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: all 0.3s cubic-bezier(.16,1,.3,1);
-      pointer-events: none;
-      max-width: 320px;
+      position: fixed; bottom: 28px; right: 28px; padding: 13px 18px; border-radius: 12px;
+      font-size: 14px; font-weight: 500; color: white; z-index: 9999;
+      opacity: 0; transform: translateY(10px); transition: all 0.3s cubic-bezier(.16,1,.3,1);
+      pointer-events: none; max-width: 300px;
     }
-
     #toast.show { opacity: 1; transform: translateY(0); }
     #toast.success { background: var(--success); }
     #toast.error { background: var(--error); }
 
-    /* ── APP SHELL ── */
-    #page-app {
-      flex-direction: row;
-    }
+    /* APP */
+    #page-app { flex-direction: row; }
 
     .sidebar {
-      width: 240px;
-      min-height: 100vh;
-      background: var(--charcoal);
-      display: flex;
-      flex-direction: column;
-      padding: 32px 0;
-      position: sticky;
-      top: 0;
-      flex-shrink: 0;
+      width: 228px; background: var(--charcoal);
+      display: flex; flex-direction: column; padding: 28px 0;
+      position: sticky; top: 0; height: 100vh; flex-shrink: 0; overflow-y: auto;
     }
-
-    .sidebar-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      font-weight: 700;
-      color: white;
-      padding: 0 28px;
-      margin-bottom: 4px;
-    }
-
+    .sidebar-logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: white; padding: 0 22px; margin-bottom: 2px; }
     .sidebar-logo span { color: var(--amber); }
+    .sidebar-role { font-size: 10px; color: var(--warm-gray-light); padding: 0 22px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 26px; }
 
-    .sidebar-role {
-      font-size: 11px;
-      font-weight: 400;
-      color: var(--warm-gray-light);
-      padding: 0 28px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 36px;
-    }
-
-    .nav-section {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
-      padding: 0 28px;
-      margin-bottom: 8px;
-      margin-top: 20px;
-    }
-
+    .nav-section { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.22); padding: 0 22px; margin: 16px 0 5px; }
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 28px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.6);
-      cursor: pointer;
-      transition: all 0.2s;
-      border-left: 3px solid transparent;
+      display: flex; align-items: center; gap: 10px; padding: 11px 22px;
+      font-size: 14px; color: rgba(255,255,255,0.55); cursor: pointer;
+      transition: all 0.15s; border-left: 3px solid transparent;
     }
-
     .nav-item:hover { color: white; background: rgba(255,255,255,0.05); }
     .nav-item.active { color: white; border-left-color: var(--amber); background: rgba(200,131,42,0.1); }
-    .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
+    .nav-item .icon { font-size: 15px; width: 20px; text-align: center; }
 
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 0 28px;
-    }
-
-    .sidebar-user {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 0;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .user-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--amber);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 600;
-      color: white;
-      flex-shrink: 0;
-    }
-
-    .user-name { font-size: 14px; color: white; font-weight: 500; }
-    .user-logout {
-      font-size: 12px;
-      color: var(--warm-gray-light);
-      cursor: pointer;
-      margin-top: 2px;
-    }
-
+    .sidebar-footer { margin-top: auto; padding: 0 22px; }
+    .sidebar-user { display: flex; align-items: center; gap: 10px; padding: 14px 0; border-top: 1px solid rgba(255,255,255,0.08); }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--amber); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: white; flex-shrink: 0; }
+    .user-name { font-size: 13px; color: white; font-weight: 500; }
+    .user-logout { font-size: 12px; color: var(--warm-gray-light); cursor: pointer; margin-top: 1px; }
     .user-logout:hover { color: var(--amber); }
 
-    /* ── MAIN CONTENT ── */
-    .main-content {
-      flex: 1;
-      padding: 40px 48px;
-      overflow-y: auto;
-    }
-
+    .main-content { flex: 1; padding: 36px 40px; overflow-y: auto; }
     .view { display: none; }
-    .view.active { display: block; animation: fadeUp 0.4s cubic-bezier(.16,1,.3,1) both; }
+    .view.active { display: block; animation: fadeUp 0.35s cubic-bezier(.16,1,.3,1) both; }
+    .view-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; margin-bottom: 4px; }
+    .view-sub { font-size: 13px; color: var(--warm-gray); margin-bottom: 28px; }
 
-    .view-header {
-      margin-bottom: 32px;
-    }
+    .card { background: var(--card-bg); border-radius: 16px; padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; margin-bottom: 18px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-    .view-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 30px;
-      font-weight: 600;
-      color: var(--charcoal);
-    }
+    .stat-card { background: var(--card-bg); border-radius: 14px; padding: 20px 22px; border: 1px solid var(--border); }
+    .stat-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 6px; }
+    .stat-value { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 600; }
+    .stat-sub { font-size: 12px; color: var(--warm-gray); margin-top: 3px; }
 
-    .view-sub {
-      font-size: 14px;
-      color: var(--warm-gray);
-      margin-top: 4px;
-    }
-
-    /* ── CARDS ── */
-    .card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 28px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-    }
-
-    .card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--charcoal);
-      margin-bottom: 20px;
-    }
-
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-
-    /* ── STAT PILLS ── */
-    .stat-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 24px 28px;
-      border: 1px solid var(--border);
-    }
-
-    .stat-label {
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--warm-gray);
-      margin-bottom: 8px;
-    }
-
-    .stat-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 600;
-      color: var(--charcoal);
-    }
-
-    .stat-sub { font-size: 13px; color: var(--warm-gray); margin-top: 4px; }
-
-    /* ── TABLE ── */
     .data-table { width: 100%; border-collapse: collapse; }
-
-    .data-table th {
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--warm-gray);
-      font-weight: 500;
-      text-align: left;
-      padding: 0 16px 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .data-table td {
-      padding: 14px 16px;
-      font-size: 14px;
-      border-bottom: 1px solid rgba(224,213,197,0.5);
-      vertical-align: middle;
-    }
-
+    .data-table th { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warm-gray); font-weight: 500; text-align: left; padding: 0 14px 10px; border-bottom: 1px solid var(--border); }
+    .data-table td { padding: 13px 14px; font-size: 14px; border-bottom: 1px solid rgba(224,213,197,0.5); vertical-align: middle; }
     .data-table tr:last-child td { border-bottom: none; }
     .data-table tr:hover td { background: rgba(200,131,42,0.03); }
 
-    /* ── BADGES ── */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-    }
-
-    .badge-placed { background: rgba(100,140,200,0.15); color: #4a6fb5; }
-    .badge-ready { background: rgba(90,138,95,0.15); color: var(--success); }
-    .badge-paid { background: rgba(200,131,42,0.15); color: var(--amber-dark); }
-    .badge-partial { background: rgba(180,140,60,0.15); color: #9a7520; }
-    .badge-pending { background: rgba(180,80,80,0.12); color: var(--error); }
-    .badge-dinein { background: rgba(100,80,200,0.12); color: #6050b0; }
+    .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+    .badge-dinein  { background: rgba(100,80,200,0.12); color: #6050b0; }
     .badge-takeout { background: rgba(80,160,140,0.12); color: #307a6a; }
 
-    /* ── ORDER DETAIL PANEL ── */
-    .order-detail {
-      background: var(--parchment);
-      border-radius: 14px;
-      padding: 24px;
-      border: 1px solid var(--border);
-      margin-top: 20px;
-    }
+    .order-detail { background: var(--parchment); border-radius: 12px; padding: 20px; border: 1px solid var(--border); margin-top: 16px; }
+    .order-line { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid rgba(200,131,42,0.12); font-size: 14px; }
+    .order-line:last-child { border-bottom: none; }
+    .line-meta { font-size: 11px; color: var(--warm-gray); margin-top: 2px; }
+    .total-row { display: flex; justify-content: space-between; padding: 12px 0 0; font-weight: 600; font-size: 15px; border-top: 2px solid var(--border); margin-top: 10px; }
 
-    .order-line-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(200,131,42,0.15);
-      font-size: 14px;
-    }
-
-    .order-line-item:last-child { border-bottom: none; }
-
-    .line-name { font-weight: 500; }
-    .line-meta { color: var(--warm-gray); font-size: 12px; }
-    .line-price { font-weight: 500; color: var(--charcoal); }
-
-    .total-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 14px 0 0;
-      font-weight: 600;
-      font-size: 15px;
-      border-top: 2px solid var(--border);
-      margin-top: 12px;
-    }
-
-    /* ── TABLE GRID ── */
-    .table-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
-
-    .table-tile {
-      border-radius: 14px;
-      padding: 20px;
-      border: 2px solid var(--border);
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: var(--card-bg);
-    }
-
-    .table-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .table-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+    .table-tile { border-radius: 14px; padding: 18px; border: 2px solid var(--border); text-align: center; transition: all 0.2s; background: var(--card-bg); }
+    .table-tile.clickable { cursor: pointer; }
+    .table-tile.clickable:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
     .table-tile.occupied { border-color: var(--amber); background: rgba(200,131,42,0.04); }
-    .table-tile.occupied .table-status { color: var(--amber); }
-    .table-tile.free .table-status { color: var(--success); }
-
-    .table-number { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; }
+    .table-number { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; }
     .table-cap { font-size: 12px; color: var(--warm-gray); margin: 4px 0; }
-    .table-status { font-size: 12px; font-weight: 500; margin-top: 6px; }
+    .table-status { font-size: 12px; font-weight: 500; margin-top: 5px; }
+    .table-tile.occupied .table-status { color: var(--amber); }
+    .table-tile .table-status.free-status { color: var(--success); }
 
-    /* ── MENU GRID ── */
-    .menu-section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--charcoal);
-      margin: 28px 0 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-    }
+    .menu-cat { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin: 22px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    .menu-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(224,213,197,0.4); }
+    .menu-row:last-child { border-bottom: none; }
+    .menu-name { font-size: 14px; font-weight: 500; }
+    .menu-price { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--amber-dark); }
 
-    .menu-item-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(224,213,197,0.5);
-    }
-
-    .menu-item-row:last-child { border-bottom: none; }
-    .menu-item-name { font-size: 15px; font-weight: 500; }
-    .menu-item-price { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--amber-dark); }
-
-    /* ── FORM ROWS ── */
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    /* ── DIVIDER ── */
-    .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
-
-    /* ── EMPTY STATE ── */
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--warm-gray);
-    }
-
-    .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
-    .empty-state p { font-size: 15px; }
-
-    /* ── KITCHEN QUEUE ── */
-    .kitchen-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-radius: 12px;
-      background: var(--parchment);
-      border: 1px solid var(--border);
-      margin-bottom: 10px;
-      gap: 16px;
-    }
-
-    .kitchen-item.pending { border-left: 4px solid var(--amber); }
-    .kitchen-item.done { border-left: 4px solid var(--success); opacity: 0.6; }
-
-    .ki-info { flex: 1; }
-    .ki-item { font-size: 15px; font-weight: 600; }
-    .ki-meta { font-size: 12px; color: var(--warm-gray); margin-top: 2px; }
-
-    /* ── TABS ── */
-    .tabs { display: flex; gap: 4px; background: var(--parchment); border-radius: 10px; padding: 4px; width: fit-content; margin-bottom: 24px; }
-
-    .tab {
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      color: var(--warm-gray);
-      transition: all 0.2s;
-      border: none;
-      background: transparent;
-    }
-
-    .tab.active { background: var(--card-bg); color: var(--charcoal); box-shadow: 0 1px 6px rgba(0,0,0,0.1); }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .sidebar { width: 200px; }
-      .main-content { padding: 28px 24px; }
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    }
-
-    /* ── LOADING SPINNER ── */
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 0.7s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
+    .empty { text-align: center; padding: 48px 20px; color: var(--warm-gray); }
+    .empty .ei { font-size: 40px; opacity: 0.4; margin-bottom: 10px; }
+    .err-msg { color: var(--error); font-size: 13px; margin-bottom: 12px; display: none; }
     .hidden { display: none !important; }
 
-    /* ── ROLE HIDDEN ELEMENTS ── */
-    .manager-only, .server-only, .chef-only { display: none; }
+    .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.35); border-radius: 50%; border-top-color: white; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    .role-manager, .role-server, .role-chef { display: none; }
   </style>
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
+<!-- LOGIN -->
 <div id="page-login" class="page active">
   <div class="login-card">
-    <div class="login-logo">Em<span>b</span>er</div>
+    <div class="login-logo">Young<span>'s</span></div>
     <div class="login-sub">Restaurant Management</div>
-
-    <div class="field">
-      <label>Username</label>
-      <input id="login-username" type="text" placeholder="Enter username" />
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <input id="login-password" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()" />
-    </div>
-    <div id="login-error" style="color:var(--error);font-size:13px;margin-bottom:14px;display:none;"></div>
-    <button class="btn btn-primary" onclick="login()" id="login-btn">
-      Sign in
-    </button>
+    <div class="field"><label>Username</label><input id="u" type="text" placeholder="username"/></div>
+    <div class="field"><label>Password</label><input id="p" type="password" placeholder="password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div id="login-err" class="err-msg"></div>
+    <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
   </div>
 </div>
 
-<!-- APP PAGE -->
+<!-- APP -->
 <div id="page-app" class="page">
-  <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="sidebar-logo">Em<span>b</span>er</div>
-    <div class="sidebar-role" id="sidebar-role">Staff</div>
+    <div class="sidebar-logo">Young<span>'s</span></div>
+    <div class="sidebar-role" id="sb-role"></div>
 
-    <div class="nav-section">Front of House</div>
-    <div class="nav-item active server-only manager-only" data-view="orders" onclick="showView('orders')">
-      <span class="icon">📋</span> Orders
-    </div>
-    <div class="nav-item server-only manager-only" data-view="new-order" onclick="showView('new-order')">
-      <span class="icon">➕</span> New Order
-    </div>
-    <div class="nav-item server-only manager-only" data-view="tables" onclick="showView('tables')">
-      <span class="icon">🪑</span> Tables
-    </div>
-    <div class="nav-item server-only manager-only" data-view="waitlist" onclick="showView('waitlist')">
-      <span class="icon">⏳</span> Waitlist
-    </div>
-    <div class="nav-item server-only manager-only" data-view="menu" onclick="showView('menu')">
-      <span class="icon">🍽️</span> Menu
-    </div>
+    <div class="nav-section role-manager role-server">Front of House</div>
+    <div class="nav-item role-manager role-server" data-view="orders" onclick="nav('orders')"><span class="icon">📋</span> All Orders</div>
+    <div class="nav-item role-manager role-server" data-view="new-order" onclick="nav('new-order')"><span class="icon">➕</span> New Order</div>
+    <div class="nav-item role-manager role-server" data-view="tables" onclick="nav('tables')"><span class="icon">🪑</span> Tables</div>
+    <div class="nav-item role-manager role-server" data-view="menu" onclick="nav('menu')"><span class="icon">🍽️</span> Menu</div>
 
-    <div class="nav-section chef-only manager-only">Kitchen</div>
-    <div class="nav-item chef-only manager-only" data-view="kitchen" onclick="showView('kitchen')">
-      <span class="icon">👨‍🍳</span> Kitchen Queue
-    </div>
+    <div class="nav-section role-manager">Manager</div>
+    <div class="nav-item role-manager" data-view="pricing" onclick="nav('pricing')"><span class="icon">💰</span> Update Pricing</div>
 
-    <div class="nav-section manager-only">Management</div>
-    <div class="nav-item manager-only" data-view="pricing" onclick="showView('pricing')">
-      <span class="icon">💰</span> Update Pricing
-    </div>
+    <div class="nav-section role-chef">Kitchen</div>
+    <div class="nav-item role-chef" data-view="menu" onclick="nav('menu')"><span class="icon">🍽️</span> Menu</div>
 
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-avatar" id="sb-avatar"></div>
         <div>
-          <div class="user-name" id="user-name">—</div>
-          <div class="user-logout" onclick="logout()">Sign out</div>
+          <div class="user-name" id="sb-name"></div>
+          <div class="user-logout" onclick="doLogout()">Sign out</div>
         </div>
       </div>
     </div>
   </aside>
 
-  <!-- Main -->
   <main class="main-content">
 
-    <!-- ORDERS VIEW -->
-    <div class="view active" id="view-orders">
-      <div class="view-header">
-        <div class="view-title">Orders</div>
-        <div class="view-sub">Live order overview</div>
-      </div>
-
-      <div id="orders-grid" class="grid-3" style="margin-bottom:24px;"></div>
-
+    <!-- ORDERS -->
+    <div class="view" id="view-orders">
+      <div class="view-title">Orders</div>
+      <div class="view-sub">Live order board</div>
+      <div id="stats-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;"></div>
       <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
           <div class="card-title" style="margin:0">All Orders</div>
           <button class="btn btn-ghost btn-sm" onclick="loadOrders()">↻ Refresh</button>
         </div>
-        <div id="orders-table-wrap">
-          <div class="empty-state"><div class="empty-icon">📋</div><p>Loading orders…</p></div>
-        </div>
+        <div id="orders-body"></div>
       </div>
-
-      <!-- Order detail panel -->
-      <div id="order-detail-panel" class="hidden" style="margin-top:24px;">
+      <div id="order-panel" class="hidden" style="margin-top:20px;">
         <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-            <div class="card-title" style="margin:0" id="order-detail-title">Order #—</div>
-            <button class="btn btn-ghost btn-sm" onclick="closeOrderDetail()">✕ Close</button>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div class="card-title" style="margin:0" id="panel-title">Order</div>
+            <button class="btn btn-ghost btn-sm" onclick="closePanel()">✕ Close</button>
           </div>
-          <div id="order-detail-body"></div>
+          <div id="panel-body"></div>
         </div>
       </div>
     </div>
 
-    <!-- NEW ORDER VIEW -->
+    <!-- NEW ORDER -->
     <div class="view" id="view-new-order">
-      <div class="view-header">
-        <div class="view-title">New Order</div>
-        <div class="view-sub">Create a dine-in or take-out order</div>
-      </div>
-
+      <div class="view-title">New Order</div>
+      <div class="view-sub">Create a dine-in or take-out order, then add items</div>
       <div class="grid-2">
         <div class="card">
           <div class="card-title">Order Details</div>
-
           <div class="field">
             <label>Order Type</label>
-            <select id="no-type" onchange="toggleOrderTypeFields()">
+            <select id="no-type" onchange="toggleType()">
               <option value="dine_in">Dine-In</option>
               <option value="take_out">Take-Out</option>
             </select>
           </div>
-
-          <div id="dinein-fields">
+          <div id="dinein-f">
             <div class="form-row">
-              <div class="field">
-                <label>Table Number</label>
-                <input id="no-table" type="number" placeholder="1–5" min="1" max="5" />
-              </div>
-              <div class="field">
-                <label>Guests</label>
-                <input id="no-guests" type="number" placeholder="1–6" min="1" max="6" />
-              </div>
+              <div class="field"><label>Table #</label><input id="no-table" type="number" min="1" max="5" placeholder="1–5"/></div>
+              <div class="field"><label>Guests</label><input id="no-guests" type="number" min="1" max="6" placeholder="1–6"/></div>
             </div>
           </div>
-
-          <div id="takeout-fields" class="hidden">
-            <div class="field">
-              <label>Customer Name</label>
-              <input id="no-name" type="text" placeholder="Full name" />
-            </div>
+          <div id="takeout-f" class="hidden">
+            <div class="field"><label>Customer Name</label><input id="no-name" type="text" placeholder="Full name"/></div>
           </div>
-
-          <button class="btn btn-primary" onclick="createOrder()">Create Order</button>
+          <button class="btn btn-primary" onclick="doCreateOrder()">Create Order</button>
         </div>
 
-        <div class="card" id="add-item-card" style="opacity:0.5;pointer-events:none;">
+        <div class="card" id="add-item-card" style="opacity:.45;pointer-events:none;">
           <div class="card-title">Add Items</div>
-          <div style="background:var(--parchment);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;color:var(--warm-gray);">
-            Order ID: <strong id="current-order-id">—</strong>
+          <div style="background:var(--parchment);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--warm-gray);">
+            Active order: <strong id="cur-order-id">—</strong>
           </div>
-
-          <div class="field">
-            <label>Item</label>
-            <select id="ai-item">
-              <option value="">Select a menu item…</option>
-            </select>
-          </div>
-
+          <div class="field"><label>Item</label><select id="ai-item"><option value="">Select item…</option></select></div>
           <div class="form-row">
-            <div class="field">
-              <label>Quantity</label>
-              <input id="ai-qty" type="number" value="1" min="1" />
-            </div>
-            <div class="field">
-              <label>Seat # <span style="color:var(--warm-gray-light)">(0 for takeout)</span></label>
-              <input id="ai-seat" type="number" value="1" min="0" />
-            </div>
+            <div class="field"><label>Qty</label><input id="ai-qty" type="number" value="1" min="1"/></div>
+            <div class="field"><label>Seat # <span style="color:var(--warm-gray-light)">(0 = takeout)</span></label><input id="ai-seat" type="number" value="1" min="0"/></div>
           </div>
-
-          <button class="btn btn-primary" onclick="addItem()">Add Item</button>
+          <button class="btn btn-primary" onclick="doAddItem()">Add Item</button>
+          <div id="added-items" style="margin-top:16px;"></div>
         </div>
       </div>
     </div>
 
-    <!-- TABLES VIEW -->
+    <!-- TABLES -->
     <div class="view" id="view-tables">
-      <div class="view-header">
-        <div class="view-title">Tables</div>
-        <div class="view-sub">Current floor status</div>
-      </div>
+      <div class="view-title">Tables</div>
+      <div class="view-sub">Current floor status — click an occupied table to view its order</div>
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
           <div class="card-title" style="margin:0">Floor Plan</div>
           <button class="btn btn-ghost btn-sm" onclick="loadTables()">↻ Refresh</button>
         </div>
@@ -757,61 +293,10 @@
       </div>
     </div>
 
-    <!-- WAITLIST VIEW -->
-    <div class="view" id="view-waitlist">
-      <div class="view-header">
-        <div class="view-title">Waitlist</div>
-        <div class="view-sub">Manage waiting parties</div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-title">Add to Waitlist</div>
-          <div class="field">
-            <label>Customer Name</label>
-            <input id="wl-name" type="text" placeholder="Party name" />
-          </div>
-          <div class="field">
-            <label>Party Size</label>
-            <input id="wl-size" type="number" placeholder="1–6" min="1" max="6" />
-          </div>
-          <button class="btn btn-primary" onclick="addToWaitlist()">Add to Waitlist</button>
-        </div>
-
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-            <div class="card-title" style="margin:0">Current Waitlist</div>
-            <button class="btn btn-ghost btn-sm" onclick="loadWaitlist()">↻ Refresh</button>
-          </div>
-          <div id="waitlist-body">
-            <div class="empty-state"><div class="empty-icon">⏳</div><p>No one waiting</p></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Seat from waitlist -->
-      <div class="card" style="margin-top:24px;" id="seat-wl-card" class="hidden">
-        <div class="card-title">Seat a Waitlist Party</div>
-        <div class="form-row">
-          <div class="field">
-            <label>Waitlist ID</label>
-            <input id="seat-wl-id" type="number" placeholder="Waitlist ID" />
-          </div>
-          <div class="field">
-            <label>Table Number</label>
-            <input id="seat-wl-table" type="number" placeholder="Table #" min="1" max="5" />
-          </div>
-        </div>
-        <button class="btn btn-primary btn-sm" style="width:auto;" onclick="seatWaitlist()">Seat Party</button>
-      </div>
-    </div>
-
-    <!-- MENU VIEW -->
+    <!-- MENU -->
     <div class="view" id="view-menu">
-      <div class="view-header">
-        <div class="view-title">Menu</div>
-        <div class="view-sub">Current offerings</div>
-      </div>
+      <div class="view-title">Menu</div>
+      <div class="view-sub">Current offerings</div>
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
           <div class="card-title" style="margin:0">Full Menu</div>
@@ -821,132 +306,85 @@
       </div>
     </div>
 
-    <!-- KITCHEN VIEW -->
-    <div class="view" id="view-kitchen">
-      <div class="view-header">
-        <div class="view-title">Kitchen Queue</div>
-        <div class="view-sub">Incoming tickets</div>
-      </div>
-
-      <div class="tabs">
-        <button class="tab active" onclick="setKitchenTab('pending',this)">Pending</button>
-        <button class="tab" onclick="setKitchenTab('all',this)">All</button>
-      </div>
-
-      <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
-        <button class="btn btn-ghost btn-sm" onclick="loadKitchen()">↻ Refresh</button>
-      </div>
-
-      <div id="kitchen-body"></div>
-    </div>
-
-    <!-- PRICING VIEW -->
+    <!-- PRICING -->
     <div class="view" id="view-pricing">
-      <div class="view-header">
-        <div class="view-title">Update Pricing</div>
-        <div class="view-sub">Manage menu item prices</div>
-      </div>
-
-      <div class="card" style="max-width:480px;">
+      <div class="view-title">Update Pricing</div>
+      <div class="view-sub">Manager only — adjust item prices live</div>
+      <div class="card" style="max-width:440px;">
         <div class="card-title">Change Item Price</div>
-        <div class="field">
-          <label>Item Name</label>
-          <select id="price-item">
-            <option value="">Select item…</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>New Price ($)</label>
-          <input id="price-value" type="number" step="0.01" min="0" placeholder="0.00" />
-        </div>
-        <button class="btn btn-primary" onclick="updatePrice()">Update Price</button>
+        <div class="field"><label>Item</label><select id="price-item"><option value="">Select item…</option></select></div>
+        <div class="field"><label>New Price ($)</label><input id="price-val" type="number" step="0.01" min="0" placeholder="0.00"/></div>
+        <button class="btn btn-primary" onclick="doUpdatePrice()">Update Price</button>
       </div>
     </div>
 
   </main>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
 const BASE = "https://p2-5-lule.onrender.com";
-let session = null;
-let currentKitchenTab = 'pending';
-let menuItems = [];
+let sess = null;
 
-// ─── SESSION PERSISTENCE ───────────────────────────────
-function saveSession(data) {
-  session = data;
-  localStorage.setItem('ember_session', JSON.stringify(data));
-}
+// ── SESSION ──────────────────────────────────────
+function saveSession(s) { sess = s; localStorage.setItem('youngs_v2', JSON.stringify(s)); }
+function loadSession()  { try { const r = localStorage.getItem('youngs_v2'); if(r) sess = JSON.parse(r); } catch(e){} return sess; }
+function clearSession() { sess = null; localStorage.removeItem('youngs_v2'); }
 
-function loadSession() {
-  const s = localStorage.getItem('ember_session');
-  if (s) session = JSON.parse(s);
-  return session;
-}
-
-function clearSession() {
-  session = null;
-  localStorage.removeItem('ember_session');
-}
-
-// ─── TOAST ────────────────────────────────────────────
-function toast(msg, type = 'success') {
+// ── TOAST ────────────────────────────────────────
+function toast(msg, type='success') {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = `show ${type}`;
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 3200);
+  el.textContent = msg; el.className = `show ${type}`;
+  clearTimeout(el._t); el._t = setTimeout(() => el.className = '', 3200);
 }
 
-// ─── PAGE ROUTING ─────────────────────────────────────
+// ── PAGES / VIEWS ─────────────────────────────────
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
 }
 
-function showView(name) {
+function nav(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => {
-    n.classList.toggle('active', n.dataset.view === name);
-  });
-
-  if (name === 'orders') loadOrders();
-  if (name === 'tables') loadTables();
-  if (name === 'menu') loadMenu();
-  if (name === 'kitchen') loadKitchen();
-  if (name === 'waitlist') loadWaitlist();
-  if (name === 'pricing') { loadMenu(); populatePriceSelect(); }
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === name));
+  closePanel();
+  if (name === 'orders')  loadOrders();
+  if (name === 'tables')  loadTables();
+  if (name === 'menu')    loadMenu();
 }
 
-// ─── ROLE UI ──────────────────────────────────────────
-function applyRoleUI(role) {
-  const classes = { 'MANAGER': 'manager-only', 'SERVER': 'server-only', 'CHEF': 'chef-only' };
-  // Show elements for this role
-  const show = {
-    'MANAGER': ['manager-only', 'server-only', 'chef-only'],
-    'SERVER': ['server-only'],
-    'CHEF': ['chef-only']
-  };
-  (show[role] || []).forEach(cls => {
-    document.querySelectorAll('.' + cls).forEach(el => el.style.display = 'flex');
-  });
+// ── ROLE UI ───────────────────────────────────────
+function applyRole(role) {
+  const show = { MANAGER:['role-manager','role-server'], SERVER:['role-server'], CHEF:['role-chef'] };
+  (show[role] || []).forEach(cls =>
+    document.querySelectorAll('.' + cls).forEach(el => el.style.display = 'flex')
+  );
 }
 
-function getDefaultView(role) {
-  if (role === 'CHEF') return 'kitchen';
-  return 'orders';
+function initApp() {
+  document.getElementById('sb-name').textContent   = sess.username;
+  document.getElementById('sb-avatar').textContent = sess.username[0].toUpperCase();
+  document.getElementById('sb-role').textContent   = sess.role;
+  applyRole(sess.role);
+  showPage('app');
+  const first = sess.role === 'CHEF' ? 'menu' : 'orders';
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === first));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + first).classList.add('active');
+  if (first === 'orders') loadOrders();
+  if (first === 'menu')   loadMenu();
+  fetchMenuForSelects();
 }
 
-// ─── LOGIN ────────────────────────────────────────────
-async function login() {
-  const username = document.getElementById('login-username').value.trim();
-  const password = document.getElementById('login-password').value;
+// ── LOGIN ─────────────────────────────────────────
+async function doLogin() {
+  const username = document.getElementById('u').value.trim();
+  const password = document.getElementById('p').value;
   const btn = document.getElementById('login-btn');
-  const errEl = document.getElementById('login-error');
+  const errEl = document.getElementById('login-err');
+  errEl.style.display = 'none';
 
   if (!username || !password) {
     errEl.textContent = 'Please enter your credentials.';
@@ -954,527 +392,357 @@ async function login() {
     return;
   }
 
-  btn.innerHTML = '<span class="spinner"></span>';
-  btn.disabled = true;
-  errEl.style.display = 'none';
+  btn.innerHTML = '<span class="spinner"></span>'; btn.disabled = true;
 
   try {
-    const res = await fetch(BASE + '/login', {
+    const res  = await fetch(BASE + '/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
     const data = await res.json();
-
     if (data.success) {
-      saveSession({ token: data.session_token, username, role: data.role || detectRole(username) });
+      saveSession({ token: data.session_token, username, role: data.role });
       initApp();
     } else {
       errEl.textContent = data.message || 'Invalid credentials.';
       errEl.style.display = 'block';
     }
-  } catch (e) {
-    errEl.textContent = 'Could not reach server. Check connection.';
+  } catch(e) {
+    errEl.textContent = 'Cannot reach server. Try again shortly.';
     errEl.style.display = 'block';
   }
 
-  btn.innerHTML = 'Sign in';
-  btn.disabled = false;
+  btn.innerHTML = 'Sign In'; btn.disabled = false;
 }
 
-function detectRole(username) {
-  if (username === 'manager') return 'MANAGER';
-  if (username === 'chef') return 'CHEF';
-  return 'SERVER';
-}
-
-function initApp() {
-  const s = session;
-  document.getElementById('user-name').textContent = s.username;
-  document.getElementById('user-avatar').textContent = s.username[0].toUpperCase();
-  document.getElementById('sidebar-role').textContent = s.role;
-  applyRoleUI(s.role);
-  showPage('app');
-  showView(getDefaultView(s.role));
-  loadMenuIntoSelects();
-}
-
-function logout() {
+function doLogout() {
   clearSession();
-  document.querySelectorAll('.manager-only, .server-only, .chef-only').forEach(el => el.style.display = 'none');
-  document.getElementById('login-username').value = '';
-  document.getElementById('login-password').value = '';
+  document.querySelectorAll('.role-manager,.role-server,.role-chef').forEach(el => el.style.display = 'none');
+  document.getElementById('login-err').style.display = 'none';
+  document.getElementById('u').value = '';
+  document.getElementById('p').value = '';
   showPage('login');
 }
 
-// ─── ORDERS ───────────────────────────────────────────
-const statusMap = {
-  1: ['PLACED','badge-placed'],
-  2: ['READY','badge-ready'],
-  3: ['PAID','badge-paid'],
-  4: ['PARTIALLY PAID','badge-partial']
-};
-
-const typeMap = {
-  1: ['Dine-In','badge-dinein'],
-  2: ['Take-Out','badge-takeout']
-};
-
+// ── ORDERS ────────────────────────────────────────
 async function loadOrders() {
-  const wrap = document.getElementById('orders-table-wrap');
+  const body = document.getElementById('orders-body');
+  body.innerHTML = '<div class="empty"><div class="ei">⏳</div><p>Loading…</p></div>';
   try {
-    const res = await fetch(BASE + '/orders', {
-      headers: { 'Authorization': session.token }
-    });
+    const res  = await fetch(BASE + '/orders');
     const data = await res.json();
-    if (!data.success || !data.orders?.length) {
-      wrap.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No orders yet</p></div>';
-      updateOrderStats([]);
+
+    if (!data.success) {
+      body.innerHTML = `<div class="empty"><p>${data.message}</p></div>`;
       return;
     }
 
-    const orders = data.orders;
-    updateOrderStats(orders);
+    const orders = data.orders || [];
+    updateStats(orders);
 
-    wrap.innerHTML = `
+    if (!orders.length) {
+      body.innerHTML = '<div class="empty"><div class="ei">📋</div><p>No orders yet</p></div>';
+      return;
+    }
+
+    body.innerHTML = `
       <table class="data-table">
-        <thead>
-          <tr>
-            <th>Order #</th><th>Type</th><th>Status</th><th>Table / Name</th><th>Total</th><th>Remaining</th><th></th>
-          </tr>
-        </thead>
+        <thead><tr>
+          <th>Order #</th><th>Type</th><th>Table / Name</th><th>Items</th><th></th>
+        </tr></thead>
         <tbody>
           ${orders.map(o => {
-            const [sLabel, sCls] = statusMap[o.status] || ['—',''];
-            const [tLabel, tCls] = typeMap[o.type] || ['—',''];
-            const who = o.type === 1 ? `Table ${o.table_number}` : o.customer_name || '—';
+            const isIn = o.type === 'dine_in';
+            const who  = isIn ? `Table ${o.table_number}` : (o.customer_name || '—');
+            const badge = isIn
+              ? `<span class="badge badge-dinein">Dine-In</span>`
+              : `<span class="badge badge-takeout">Take-Out</span>`;
+            const count = (o.items || []).reduce((s,i) => s + i.quantity, 0);
             return `<tr>
               <td><strong>#${o.order_id}</strong></td>
-              <td><span class="badge ${tCls}">${tLabel}</span></td>
-              <td><span class="badge ${sCls}">${sLabel}</span></td>
+              <td>${badge}</td>
               <td>${who}</td>
-              <td>$${o.total.toFixed(2)}</td>
-              <td style="color:${o.remaining > 0 ? 'var(--error)' : 'var(--success)'}">$${o.remaining.toFixed(2)}</td>
+              <td>${count} item${count !== 1 ? 's' : ''}</td>
               <td><button class="btn btn-ghost btn-sm" onclick="viewOrderDetail(${o.order_id})">View</button></td>
             </tr>`;
           }).join('')}
         </tbody>
       </table>`;
   } catch(e) {
-    wrap.innerHTML = '<div class="empty-state"><p>Error loading orders.</p></div>';
+    body.innerHTML = `<div class="empty"><p>Error: ${e.message}</p></div>`;
   }
 }
 
-function updateOrderStats(orders) {
-  const placed = orders.filter(o => o.status === 1).length;
-  const ready  = orders.filter(o => o.status === 2).length;
-  const unpaid = orders.reduce((s, o) => s + o.remaining, 0);
-
-  document.getElementById('orders-grid').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Active Orders</div><div class="stat-value">${placed}</div><div class="stat-sub">In progress</div></div>
-    <div class="stat-card"><div class="stat-label">Ready to Serve</div><div class="stat-value">${ready}</div><div class="stat-sub">Awaiting pickup</div></div>
-    <div class="stat-card"><div class="stat-label">Outstanding</div><div class="stat-value">$${unpaid.toFixed(2)}</div><div class="stat-sub">Total unpaid</div></div>`;
+function updateStats(orders) {
+  const dineIn  = orders.filter(o => o.type === 'dine_in').length;
+  const takeOut = orders.filter(o => o.type === 'take_out').length;
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value">${orders.length}</div><div class="stat-sub">All active</div></div>
+    <div class="stat-card"><div class="stat-label">Dine-In</div><div class="stat-value">${dineIn}</div><div class="stat-sub">At tables</div></div>
+    <div class="stat-card"><div class="stat-label">Take-Out</div><div class="stat-value">${takeOut}</div><div class="stat-sub">Pick-up orders</div></div>`;
 }
 
 async function viewOrderDetail(orderId) {
-  const panel = document.getElementById('order-detail-panel');
-  const body = document.getElementById('order-detail-body');
-  const title = document.getElementById('order-detail-title');
+  const panel = document.getElementById('order-panel');
+  const body  = document.getElementById('panel-body');
+  document.getElementById('panel-title').textContent = `Order #${orderId}`;
   panel.classList.remove('hidden');
-  title.textContent = `Order #${orderId}`;
-  body.innerHTML = '<div class="empty-state"><p>Loading…</p></div>';
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  body.innerHTML = '<div class="empty"><p>Loading…</p></div>';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   try {
-    const res = await fetch(BASE + '/orders/' + orderId, {
-      headers: { 'Authorization': session.token }
-    });
+    const res  = await fetch(BASE + '/orders/' + orderId);
     const data = await res.json();
-    if (!data.success) { body.innerHTML = `<p style="color:var(--error)">${data.message}</p>`; return; }
 
-    const [sLabel] = statusMap[data.status] || ['—'];
-    const [tLabel] = typeMap[data.type] || ['—'];
+    if (!data.success) {
+      body.innerHTML = `<p style="color:var(--error)">${data.message}</p>`;
+      return;
+    }
 
-    let itemsHtml = data.items?.length
-      ? data.items.map(it => `
-          <div class="order-line-item">
+    const o     = data.order;
+    const items = o.items || [];
+    const isIn  = o.type === 'dine_in';
+    const badge = isIn
+      ? `<span class="badge badge-dinein">Dine-In</span>`
+      : `<span class="badge badge-takeout">Take-Out</span>`;
+    const who = isIn ? `Table ${o.table_number} · ${o.guests} guest${o.guests !== 1 ? 's' : ''}` : o.customer_name;
+
+    const itemsHtml = items.length
+      ? items.map(it => `
+          <div class="order-line">
             <div>
-              <div class="line-name">${it.item_name} × ${it.quantity}</div>
-              <div class="line-meta">${data.type===1 ? `Seat ${it.seat_number}` : 'Take-out'} · ${it.kitchen_status === 1 ? '⏳ Pending' : '✅ Done'}</div>
+              <div style="font-weight:500">${it.item_name} × ${it.quantity}</div>
+              <div class="line-meta">${isIn ? `Seat ${it.seat_number}` : 'Take-out'} · $${Number(it.unit_price).toFixed(2)} each</div>
             </div>
-            <div class="line-price">$${it.line_total.toFixed(2)}</div>
+            <div style="font-weight:500">$${Number(it.line_total).toFixed(2)}</div>
           </div>`).join('')
-      : '<div style="color:var(--warm-gray);font-size:14px;padding:12px 0;">No items yet</div>';
+      : '<div style="color:var(--warm-gray);font-size:14px;padding:8px 0;">No items yet</div>';
 
     let seatsHtml = '';
-    if (data.type === 1 && data.seat_totals?.length) {
-      seatsHtml = `<div style="margin-top:20px;"><div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:10px;">Per Seat</div>
+    if (isIn && data.seat_totals?.length) {
+      seatsHtml = `<div style="margin-top:16px;">
+        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:8px;">Per Seat</div>
         ${data.seat_totals.map(s => `
-          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;">
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;">
             <span>Seat ${s.seat_number} ${s.fully_paid ? '✅' : ''}</span>
-            <span>$${s.total.toFixed(2)} ${s.remaining > 0 ? `<span style="color:var(--error)">(owed $${s.remaining.toFixed(2)})</span>` : ''}</span>
+            <span>$${Number(s.total).toFixed(2)}${s.remaining > 0 ? ` <span style="color:var(--error);font-size:12px;">(owes $${Number(s.remaining).toFixed(2)})</span>` : ''}</span>
           </div>`).join('')}
       </div>`;
     }
 
-    const canCashout = data.status !== 3 && data.total > 0;
-    const cashoutHtml = canCashout ? `
-      <hr class="divider">
-      <div style="font-size:13px;color:var(--warm-gray);margin-bottom:12px;">Process Payment</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        ${data.type === 1 ? `
-          <button class="btn btn-secondary btn-sm" onclick="cashout(${orderId},'table')">Pay Full Table</button>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <input id="cashout-seat-${orderId}" type="number" placeholder="Seat #" style="width:80px;" min="1" max="${data.guests}" />
-            <button class="btn btn-secondary btn-sm" onclick="cashoutSeat(${orderId})">Pay Seat</button>
-          </div>` :
-          `<button class="btn btn-secondary btn-sm" onclick="cashout(${orderId},'takeout')">Pay Order</button>`}
-      </div>` : '';
-
     body.innerHTML = `
-      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
-        <span class="badge ${(typeMap[data.type]||['',''])[1]}">${tLabel}</span>
-        <span class="badge ${(statusMap[data.status]||['',''])[1]}">${sLabel}</span>
-        ${data.type===1 ? `<span style="font-size:13px;color:var(--warm-gray);">Table ${data.table_number} · ${data.guests} guests</span>` : `<span style="font-size:13px;color:var(--warm-gray);">${data.customer_name}</span>`}
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+        ${badge}
+        <span style="font-size:13px;color:var(--warm-gray);">${who}</span>
       </div>
       <div class="order-detail">
         ${itemsHtml}
-        <div class="total-row"><span>Total</span><span>$${data.total.toFixed(2)}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px;color:var(--success)"><span>Paid</span><span>$${data.paid.toFixed(2)}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px;color:${data.remaining>0?'var(--error)':'var(--success)'}"><span>Remaining</span><span>$${data.remaining.toFixed(2)}</span></div>
+        <div class="total-row"><span>Total</span><span>$${Number(data.total).toFixed(2)}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:14px;color:var(--warm-gray);">
+          <span>Paid</span><span>$${Number(data.paid).toFixed(2)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:14px;color:${data.remaining > 0 ? 'var(--error)' : 'var(--success)'};">
+          <span>Remaining</span><span>$${Number(data.remaining).toFixed(2)}</span>
+        </div>
       </div>
-      ${seatsHtml}
-      ${cashoutHtml}`;
+      ${seatsHtml}`;
   } catch(e) {
-    body.innerHTML = '<p style="color:var(--error)">Error loading order.</p>';
+    body.innerHTML = `<p style="color:var(--error)">Error: ${e.message}</p>`;
   }
 }
 
-function closeOrderDetail() {
-  document.getElementById('order-detail-panel').classList.add('hidden');
+function closePanel() {
+  document.getElementById('order-panel').classList.add('hidden');
 }
 
-// ─── CASHOUT ──────────────────────────────────────────
-async function cashout(orderId, target) {
-  try {
-    const body = { session_token: session.token, order_id: orderId };
-    if (target === 'table') body.payment_target = 'table';
-    else if (target === 'takeout') body.payment_target = 'takeout_order';
-
-    const res = await fetch(BASE + '/cashout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    if (data.success) {
-      toast(`Payment processed — $${data.amount_charged.toFixed(2)} charged`);
-      viewOrderDetail(orderId);
-      loadOrders();
-    } else {
-      toast(data.message, 'error');
-    }
-  } catch(e) { toast('Error processing payment', 'error'); }
+// ── NEW ORDER ─────────────────────────────────────
+function toggleType() {
+  const t = document.getElementById('no-type').value;
+  document.getElementById('dinein-f').classList.toggle('hidden', t !== 'dine_in');
+  document.getElementById('takeout-f').classList.toggle('hidden', t !== 'take_out');
 }
 
-async function cashoutSeat(orderId) {
-  const seat = parseInt(document.getElementById(`cashout-seat-${orderId}`).value);
-  if (!seat) { toast('Enter a seat number', 'error'); return; }
-  try {
-    const res = await fetch(BASE + '/cashout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_token: session.token, order_id: orderId, payment_target: 'seat', seat_number: seat })
-    });
-    const data = await res.json();
-    if (data.success) {
-      toast(`Seat ${seat} paid — $${data.amount_charged.toFixed(2)}`);
-      viewOrderDetail(orderId);
-      loadOrders();
-    } else {
-      toast(data.message, 'error');
-    }
-  } catch(e) { toast('Error', 'error'); }
-}
-
-// ─── NEW ORDER ────────────────────────────────────────
-function toggleOrderTypeFields() {
+async function doCreateOrder() {
+  if (!sess) { toast('Not logged in', 'error'); return; }
   const type = document.getElementById('no-type').value;
-  document.getElementById('dinein-fields').classList.toggle('hidden', type !== 'dine_in');
-  document.getElementById('takeout-fields').classList.toggle('hidden', type !== 'take_out');
-}
-
-async function createOrder() {
-  const type = document.getElementById('no-type').value;
-  const body = { session_token: session.token, order_type: type };
+  const payload = { session_token: sess.token, order_type: type };
 
   if (type === 'dine_in') {
-    body.table_number = parseInt(document.getElementById('no-table').value || 0);
-    body.guests = parseInt(document.getElementById('no-guests').value || 0);
+    const t = parseInt(document.getElementById('no-table').value);
+    const g = parseInt(document.getElementById('no-guests').value);
+    if (!t || !g) { toast('Enter table and guest count', 'error'); return; }
+    payload.table_number = t;
+    payload.guests = g;
   } else {
-    body.customer_name = document.getElementById('no-name').value.trim();
+    const n = document.getElementById('no-name').value.trim();
+    if (!n) { toast('Enter customer name', 'error'); return; }
+    payload.customer_name = n;
   }
 
   try {
-    const res = await fetch(BASE + '/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+    const res  = await fetch(BASE + '/orders', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
     const data = await res.json();
     if (data.success) {
       toast(`Order #${data.order_id} created!`);
-      document.getElementById('current-order-id').textContent = data.order_id;
-      document.getElementById('add-item-card').style.opacity = '1';
-      document.getElementById('add-item-card').style.pointerEvents = 'all';
+      document.getElementById('cur-order-id').textContent = data.order_id;
+      const card = document.getElementById('add-item-card');
+      card.style.opacity = '1'; card.style.pointerEvents = 'all';
       document.getElementById('ai-seat').value = type === 'take_out' ? 0 : 1;
+      document.getElementById('added-items').innerHTML = '';
     } else {
       toast(data.message, 'error');
     }
-  } catch(e) { toast('Error creating order', 'error'); }
+  } catch(e) { toast('Network error: ' + e.message, 'error'); }
 }
 
-async function addItem() {
-  const orderId = parseInt(document.getElementById('current-order-id').textContent);
-  if (!orderId) { toast('Create an order first', 'error'); return; }
+async function doAddItem() {
+  if (!sess) { toast('Not logged in', 'error'); return; }
+  const orderId = document.getElementById('cur-order-id').textContent;
+  if (orderId === '—') { toast('Create an order first', 'error'); return; }
 
-  const body = {
-    session_token: session.token,
-    order_id: orderId,
-    item_name: document.getElementById('ai-item').value,
-    quantity: parseInt(document.getElementById('ai-qty').value),
-    seat_number: parseInt(document.getElementById('ai-seat').value)
-  };
+  const item = document.getElementById('ai-item').value;
+  const qty  = parseInt(document.getElementById('ai-qty').value);
+  const seat = parseInt(document.getElementById('ai-seat').value);
 
-  if (!body.item_name) { toast('Select a menu item', 'error'); return; }
+  if (!item) { toast('Select a menu item', 'error'); return; }
+  if (!qty || qty < 1) { toast('Enter a valid quantity', 'error'); return; }
 
   try {
-    const res = await fetch(BASE + '/orders/add-item', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+    const res  = await fetch(BASE + '/orders/add-item', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_token: sess.token, order_id: parseInt(orderId), item_name: item, quantity: qty, seat_number: seat })
     });
     const data = await res.json();
-    if (data.success) toast('Item added!');
-    else toast(data.message, 'error');
-  } catch(e) { toast('Error adding item', 'error'); }
+    if (data.success) {
+      toast(`${item} × ${qty} added`);
+      const list = document.getElementById('added-items');
+      const row  = document.createElement('div');
+      row.style.cssText = 'display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);';
+      row.innerHTML = `<span>${item} × ${qty}${seat > 0 ? ` <span style="color:var(--warm-gray)">(seat ${seat})</span>` : ''}</span>`;
+      list.appendChild(row);
+    } else {
+      toast(data.message, 'error');
+    }
+  } catch(e) { toast('Network error: ' + e.message, 'error'); }
 }
 
-// ─── TABLES ───────────────────────────────────────────
+// ── TABLES ────────────────────────────────────────
 async function loadTables() {
   const grid = document.getElementById('tables-grid');
+  grid.innerHTML = '<div class="empty"><p>Loading…</p></div>';
   try {
-    const res = await fetch(BASE + '/tables', {
-      headers: { 'Authorization': session.token }
-    });
+    const res  = await fetch(BASE + '/tables');
     const data = await res.json();
-    if (!data.success) { grid.innerHTML = '<p>Error</p>'; return; }
+    if (!data.success) { grid.innerHTML = '<p>Error loading tables</p>'; return; }
 
-    grid.innerHTML = data.tables.map(t => `
-      <div class="table-tile ${t.occupied ? 'occupied' : 'free'}" onclick="${t.occupied && t.order_id ? `showView('orders');setTimeout(()=>viewOrderDetail(${t.order_id}),200)` : ''}">
-        <div class="table-number">${t.table_number}</div>
+    // data.tables is a dict keyed by table number
+    const entries = Object.entries(data.tables);
+    grid.innerHTML = entries.map(([num, t]) => {
+      const occ = t.occupied;
+      const clickable = occ && t.order_id;
+      return `<div class="table-tile ${occ ? 'occupied' : 'free'} ${clickable ? 'clickable' : ''}"
+               ${clickable ? `onclick="showTableOrder(${t.order_id})"` : ''}>
+        <div class="table-number">${num}</div>
         <div class="table-cap">Up to ${t.capacity} guests</div>
-        <div class="table-status">${t.occupied ? `🔴 Occupied${t.order_id ? ` · #${t.order_id}` : ''}` : '🟢 Available'}</div>
-      </div>`).join('');
-  } catch(e) { grid.innerHTML = '<p>Error loading tables.</p>'; }
+        <div class="table-status ${occ ? '' : 'free-status'}">${occ ? `🔴 Order #${t.order_id}` : '🟢 Available'}</div>
+      </div>`;
+    }).join('');
+  } catch(e) { grid.innerHTML = `<div class="empty"><p>Error: ${e.message}</p></div>`; }
 }
 
-// ─── WAITLIST ─────────────────────────────────────────
-async function loadWaitlist() {
-  const body = document.getElementById('waitlist-body');
-  try {
-    const res = await fetch(BASE + '/waitlist', {
-      headers: { 'Authorization': session.token }
-    });
-    const data = await res.json();
-    if (!data.success || !data.entries?.length) {
-      body.innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><p>No one waiting</p></div>';
-      return;
-    }
-
-    body.innerHTML = data.entries.map(e => `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
-        <div>
-          <div style="font-weight:600;font-size:15px;">${e.customer_name}</div>
-          <div style="font-size:12px;color:var(--warm-gray);">Party of ${e.party_size} · #${e.waitlist_id}</div>
-        </div>
-        <div style="font-size:12px;color:var(--warm-gray);">${e.timestamp}</div>
-      </div>`).join('');
-  } catch(e) { body.innerHTML = '<p>Error</p>'; }
+function showTableOrder(orderId) {
+  nav('orders');
+  setTimeout(() => viewOrderDetail(orderId), 200);
 }
 
-async function addToWaitlist() {
-  const name = document.getElementById('wl-name').value.trim();
-  const size = parseInt(document.getElementById('wl-size').value);
-  if (!name || !size) { toast('Fill in all fields', 'error'); return; }
-
-  try {
-    const res = await fetch(BASE + '/waitlist', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_token: session.token, customer_name: name, party_size: size })
-    });
-    const data = await res.json();
-    if (data.success) {
-      toast(`${name} added to waitlist (#${data.waitlist_id})`);
-      document.getElementById('wl-name').value = '';
-      document.getElementById('wl-size').value = '';
-      loadWaitlist();
-    } else toast(data.message, 'error');
-  } catch(e) { toast('Error', 'error'); }
-}
-
-async function seatWaitlist() {
-  const wlId = parseInt(document.getElementById('seat-wl-id').value);
-  const table = parseInt(document.getElementById('seat-wl-table').value);
-  if (!wlId || !table) { toast('Enter waitlist ID and table', 'error'); return; }
-
-  try {
-    const res = await fetch(BASE + '/waitlist/seat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_token: session.token, waitlist_id: wlId, table_number: table })
-    });
-    const data = await res.json();
-    if (data.success) {
-      toast(`Party seated! Order #${data.order_id} created.`);
-      loadWaitlist();
-    } else toast(data.message, 'error');
-  } catch(e) { toast('Error', 'error'); }
-}
-
-// ─── MENU ─────────────────────────────────────────────
-const catNames = { 0: 'Starters', 1: 'Mains', 2: 'Desserts', 3: 'Drinks' };
-
+// ── MENU ──────────────────────────────────────────
 async function loadMenu() {
   const body = document.getElementById('menu-body');
+  body.innerHTML = '<div class="empty"><p>Loading…</p></div>';
   try {
-    const res = await fetch(BASE + '/menu', {
-      headers: { 'Authorization': session.token }
-    });
+    const res  = await fetch(BASE + '/menu');
     const data = await res.json();
-    if (!data.success) { body.innerHTML = '<p>Error</p>'; return; }
+    if (!data.success) { body.innerHTML = '<p>Error loading menu</p>'; return; }
 
-    menuItems = data.items;
-    const byCategory = {};
-    data.items.forEach(item => {
-      const cat = catNames[item.category] || 'Other';
-      if (!byCategory[cat]) byCategory[cat] = [];
-      byCategory[cat].push(item);
+    // data.menu is an object: { "Cheeseburger": { category, price, available }, ... }
+    const menu = data.menu;
+    const cats = {};
+    Object.entries(menu).forEach(([name, item]) => {
+      const cat = (item.category || 'OTHER').toUpperCase();
+      if (!cats[cat]) cats[cat] = [];
+      cats[cat].push({ name, ...item });
     });
 
-    body.innerHTML = Object.entries(byCategory).map(([cat, items]) => `
-      <div class="menu-section-title">${cat}</div>
-      ${items.map(i => `
-        <div class="menu-item-row">
+    const order  = ['STARTER','MAIN','DESSERT','DRINK','OTHER'];
+    const labels = { STARTER:'Starters', MAIN:'Mains', DESSERT:'Desserts', DRINK:'Drinks', OTHER:'Other' };
+
+    body.innerHTML = order.filter(c => cats[c]).map(cat => `
+      <div class="menu-cat">${labels[cat]}</div>
+      ${cats[cat].map(i => `
+        <div class="menu-row">
           <div>
-            <div class="menu-item-name">${i.name}</div>
+            <div class="menu-name">${i.name}</div>
             ${!i.available ? '<div style="font-size:11px;color:var(--error);">Unavailable</div>' : ''}
           </div>
-          <div class="menu-item-price">$${i.price.toFixed(2)}</div>
-        </div>`).join('')}
-    `).join('');
-  } catch(e) { body.innerHTML = '<p>Error loading menu.</p>'; }
+          <div class="menu-price">$${Number(i.price).toFixed(2)}</div>
+        </div>`).join('')}`
+    ).join('');
+
+    // also refresh selects
+    populateSelects(menu);
+  } catch(e) { body.innerHTML = `<div class="empty"><p>Error: ${e.message}</p></div>`; }
 }
 
-async function loadMenuIntoSelects() {
+async function fetchMenuForSelects() {
   try {
-    const res = await fetch(BASE + '/menu', {
-      headers: { 'Authorization': session.token }
-    });
+    const res  = await fetch(BASE + '/menu');
     const data = await res.json();
-    if (!data.success) return;
-    menuItems = data.items;
-
-    const opts = data.items.filter(i => i.available).map(i => `<option value="${i.name}">${i.name} — $${i.price.toFixed(2)}</option>`).join('');
-    ['ai-item', 'price-item'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        const base = `<option value="">Select item…</option>`;
-        el.innerHTML = base + opts;
-      }
-    });
+    if (data.success) populateSelects(data.menu);
   } catch(e) {}
 }
 
-function populatePriceSelect() {
-  loadMenuIntoSelects();
+function populateSelects(menu) {
+  const opts = Object.entries(menu)
+    .filter(([, v]) => v.available)
+    .map(([name, v]) => `<option value="${name}">${name} — $${Number(v.price).toFixed(2)}</option>`)
+    .join('');
+  ['ai-item','price-item'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = `<option value="">Select item…</option>${opts}`;
+  });
 }
 
-// ─── KITCHEN ──────────────────────────────────────────
-async function loadKitchen() {
-  const body = document.getElementById('kitchen-body');
-  try {
-    const res = await fetch(BASE + '/kitchen' + (currentKitchenTab === 'pending' ? '?pending=true' : ''), {
-      headers: { 'Authorization': session.token }
-    });
-    const data = await res.json();
-    if (!data.success || !data.items?.length) {
-      body.innerHTML = '<div class="empty-state"><div class="empty-icon">👨‍🍳</div><p>Queue is clear!</p></div>';
-      return;
-    }
+// ── PRICING ───────────────────────────────────────
+async function doUpdatePrice() {
+  if (!sess) { toast('Not logged in', 'error'); return; }
+  const item  = document.getElementById('price-item').value;
+  const price = parseFloat(document.getElementById('price-val').value);
 
-    body.innerHTML = data.items.map(item => `
-      <div class="kitchen-item ${item.status === 1 ? 'pending' : 'done'}">
-        <div class="ki-info">
-          <div class="ki-item">${item.item_name} × ${item.quantity}</div>
-          <div class="ki-meta">
-            ${item.table_number ? `Table ${item.table_number}` : item.customer_name}
-            ${item.seat_number ? ` · Seat ${item.seat_number}` : ''} · #${item.order_id} · ${item.timestamp}
-          </div>
-        </div>
-        ${item.status === 1 && session.role === 'CHEF' ? `
-          <button class="btn btn-secondary btn-sm" onclick="completeKitchenItem(${item.kitchen_item_id})">✓ Done</button>
-        ` : item.status === 2 ? '<span style="color:var(--success);font-size:13px;">✅ Complete</span>' : ''}
-      </div>`).join('');
-  } catch(e) { body.innerHTML = '<p>Error loading kitchen queue.</p>'; }
-}
-
-async function completeKitchenItem(id) {
-  try {
-    const res = await fetch(BASE + '/kitchen/complete', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_token: session.token, kitchen_item_id: id })
-    });
-    const data = await res.json();
-    if (data.success) { toast('Item marked complete'); loadKitchen(); }
-    else toast(data.message, 'error');
-  } catch(e) { toast('Error', 'error'); }
-}
-
-function setKitchenTab(tab, el) {
-  currentKitchenTab = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  loadKitchen();
-}
-
-// ─── PRICING ──────────────────────────────────────────
-async function updatePrice() {
-  const item = document.getElementById('price-item').value;
-  const price = parseFloat(document.getElementById('price-value').value);
-  if (!item) { toast('Select an item', 'error'); return; }
+  if (!item)              { toast('Select an item', 'error'); return; }
   if (isNaN(price) || price < 0) { toast('Enter a valid price', 'error'); return; }
 
   try {
-    const res = await fetch(BASE + '/menu/price', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_token: session.token, item_name: item, new_price: price })
+    const res  = await fetch(BASE + '/menu/update-price', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_token: sess.token, item_name: item, new_price: price })
     });
     const data = await res.json();
-    if (data.success) { toast(`${item} updated to $${price.toFixed(2)}`); loadMenuIntoSelects(); }
-    else toast(data.message, 'error');
-  } catch(e) { toast('Error', 'error'); }
+    if (data.success) {
+      toast(`${item} updated to $${price.toFixed(2)}`);
+      fetchMenuForSelects();
+    } else {
+      toast(data.message, 'error');
+    }
+  } catch(e) { toast('Network error: ' + e.message, 'error'); }
 }
 
-// ─── INIT ─────────────────────────────────────────────
-(function init() {
-  const s = loadSession();
-  if (s?.token) {
-    initApp();
-  }
+// ── BOOT ──────────────────────────────────────────
+(function boot() {
+  if (loadSession()) initApp();
 })();
 </script>
 </body>
