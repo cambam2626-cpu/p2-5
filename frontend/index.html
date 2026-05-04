@@ -20,6 +20,8 @@
       --border: #e0d5c5;
       --success: #5a8a5f;
       --error: #b85050;
+      --info: #5b7fa0;
+      --warn: #c89236;
       --shadow: 0 4px 24px rgba(28,26,23,0.10);
       --shadow-lg: 0 8px 40px rgba(28,26,23,0.16);
     }
@@ -46,7 +48,9 @@
     }
     .login-logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--charcoal); text-align: center; margin-bottom: 4px; }
     .login-logo span { color: var(--amber); }
-    .login-sub { text-align: center; color: var(--warm-gray); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 36px; }
+    .login-sub { text-align: center; color: var(--warm-gray); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px; }
+    .login-hint { background: var(--cream); border-radius: 8px; padding: 10px 14px; font-size: 11px; color: var(--warm-gray); margin-bottom: 22px; line-height: 1.6; }
+    .login-hint strong { color: var(--charcoal); }
 
     label { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 6px; }
     input, select {
@@ -61,6 +65,7 @@
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       padding: 12px 22px; border-radius: 10px; font-family: 'DM Sans', sans-serif;
       font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s;
+      white-space: nowrap;
     }
     .btn-primary { background: var(--amber); color: white; width: 100%; }
     .btn-primary:hover { background: var(--amber-dark); transform: translateY(-1px); }
@@ -68,23 +73,31 @@
     .btn-secondary:hover { background: rgba(200,131,42,0.08); }
     .btn-ghost { background: transparent; color: var(--warm-gray); border: 1.5px solid var(--border); }
     .btn-ghost:hover { border-color: var(--warm-gray); color: var(--charcoal); }
-    .btn-sm { padding: 8px 14px; font-size: 13px; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: #4a7a4f; }
+    .btn-danger { background: transparent; color: var(--error); border: 1.5px solid rgba(184,80,80,0.3); }
+    .btn-danger:hover { background: rgba(184,80,80,0.06); border-color: var(--error); }
+    .btn-sm { padding: 7px 13px; font-size: 13px; }
+    .btn-xs { padding: 4px 9px; font-size: 12px; }
+    .btn-block { width: 100%; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     #toast {
       position: fixed; bottom: 28px; right: 28px; padding: 13px 18px; border-radius: 12px;
       font-size: 14px; font-weight: 500; color: white; z-index: 9999;
       opacity: 0; transform: translateY(10px); transition: all 0.3s cubic-bezier(.16,1,.3,1);
-      pointer-events: none; max-width: 300px;
+      pointer-events: none; max-width: 320px; box-shadow: var(--shadow-lg);
     }
     #toast.show { opacity: 1; transform: translateY(0); }
     #toast.success { background: var(--success); }
     #toast.error { background: var(--error); }
+    #toast.info { background: var(--info); }
 
     /* APP */
     #page-app { flex-direction: row; }
 
     .sidebar {
-      width: 228px; background: var(--charcoal);
+      width: 232px; background: var(--charcoal);
       display: flex; flex-direction: column; padding: 28px 0;
       position: sticky; top: 0; height: 100vh; flex-shrink: 0; overflow-y: auto;
     }
@@ -92,9 +105,9 @@
     .sidebar-logo span { color: var(--amber); }
     .sidebar-role { font-size: 10px; color: var(--warm-gray-light); padding: 0 22px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 26px; }
 
-    .nav-section { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.22); padding: 0 22px; margin: 16px 0 5px; }
+    .nav-section { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.22); padding: 0 22px; margin: 16px 0 5px; display: none; }
     .nav-item {
-      display: flex; align-items: center; gap: 10px; padding: 11px 22px;
+      display: none; align-items: center; gap: 10px; padding: 11px 22px;
       font-size: 14px; color: rgba(255,255,255,0.55); cursor: pointer;
       transition: all 0.15s; border-left: 3px solid transparent;
     }
@@ -116,7 +129,10 @@
     .view-sub { font-size: 13px; color: var(--warm-gray); margin-bottom: 28px; }
 
     .card { background: var(--card-bg); border-radius: 16px; padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+    .card + .card { margin-top: 18px; }
     .card-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; margin-bottom: 18px; }
+    .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
+    .card-head .card-title { margin: 0; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
@@ -131,17 +147,27 @@
     .data-table tr:last-child td { border-bottom: none; }
     .data-table tr:hover td { background: rgba(200,131,42,0.03); }
 
-    .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+    .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
     .badge-dinein  { background: rgba(100,80,200,0.12); color: #6050b0; }
     .badge-takeout { background: rgba(80,160,140,0.12); color: #307a6a; }
+    .status-PLACED        { background: rgba(91,127,160,0.14); color: var(--info); }
+    .status-READY         { background: rgba(200,146,54,0.16); color: var(--warn); }
+    .status-PARTIALLY_PAID { background: rgba(200,131,42,0.18); color: var(--amber-dark); }
+    .status-PAID          { background: rgba(90,138,95,0.14); color: var(--success); }
+    .status-PENDING       { background: rgba(91,127,160,0.14); color: var(--info); }
+    .status-COMPLETED     { background: rgba(90,138,95,0.14); color: var(--success); }
 
     .order-detail { background: var(--parchment); border-radius: 12px; padding: 20px; border: 1px solid var(--border); margin-top: 16px; }
-    .order-line { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid rgba(200,131,42,0.12); font-size: 14px; }
+    .order-line { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid rgba(200,131,42,0.12); font-size: 14px; gap: 10px; }
     .order-line:last-child { border-bottom: none; }
     .line-meta { font-size: 11px; color: var(--warm-gray); margin-top: 2px; }
     .total-row { display: flex; justify-content: space-between; padding: 12px 0 0; font-weight: 600; font-size: 15px; border-top: 2px solid var(--border); margin-top: 10px; }
 
-    .table-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+    .seat-block { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+    .seat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .seat-name { font-weight: 600; font-size: 14px; }
+
+    .table-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
     .table-tile { border-radius: 14px; padding: 18px; border: 2px solid var(--border); text-align: center; transition: all 0.2s; background: var(--card-bg); }
     .table-tile.clickable { cursor: pointer; }
     .table-tile.clickable:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
@@ -158,6 +184,15 @@
     .menu-name { font-size: 14px; font-weight: 500; }
     .menu-price { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--amber-dark); }
 
+    .kitchen-card {
+      background: var(--card-bg); border-radius: 14px; padding: 18px; border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 12px;
+    }
+    .kitchen-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .kitchen-item-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; }
+    .kitchen-meta { font-size: 12px; color: var(--warm-gray); }
+    .kitchen-actions { margin-top: 10px; display: flex; gap: 8px; }
+
     .empty { text-align: center; padding: 48px 20px; color: var(--warm-gray); }
     .empty .ei { font-size: 40px; opacity: 0.4; margin-bottom: 10px; }
     .err-msg { color: var(--error); font-size: 13px; margin-bottom: 12px; display: none; }
@@ -167,16 +202,21 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
-    .role-manager, .role-server, .role-chef { display: none; }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .grow { flex: 1; }
+    .small { font-size: 12px; color: var(--warm-gray); }
   </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ───── LOGIN ───── -->
 <div id="page-login" class="page active">
   <div class="login-card">
     <div class="login-logo">Young<span>'s</span></div>
     <div class="login-sub">Restaurant Management</div>
+    <div class="login-hint">
+      <strong>Demo logins:</strong> manager / server1 / chef &nbsp;·&nbsp; password: <strong>pw</strong>
+    </div>
     <div class="field"><label>Username</label><input id="u" type="text" placeholder="username"/></div>
     <div class="field"><label>Password</label><input id="p" type="password" placeholder="password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
     <div id="login-err" class="err-msg"></div>
@@ -184,23 +224,26 @@
   </div>
 </div>
 
-<!-- APP -->
+<!-- ───── APP ───── -->
 <div id="page-app" class="page">
   <aside class="sidebar">
     <div class="sidebar-logo">Young<span>'s</span></div>
     <div class="sidebar-role" id="sb-role"></div>
 
-    <div class="nav-section role-manager role-server">Front of House</div>
-    <div class="nav-item role-manager role-server" data-view="orders" onclick="nav('orders')"><span class="icon">📋</span> All Orders</div>
-    <div class="nav-item role-manager role-server" data-view="new-order" onclick="nav('new-order')"><span class="icon">➕</span> New Order</div>
-    <div class="nav-item role-manager role-server" data-view="tables" onclick="nav('tables')"><span class="icon">🪑</span> Tables</div>
-    <div class="nav-item role-manager role-server" data-view="menu" onclick="nav('menu')"><span class="icon">🍽️</span> Menu</div>
+    <div class="nav-section" data-roles="MANAGER,SERVER">Front of House</div>
+    <div class="nav-item" data-roles="MANAGER,SERVER" data-view="orders" onclick="nav('orders')"><span class="icon">📋</span> Orders</div>
+    <div class="nav-item" data-roles="MANAGER,SERVER" data-view="new-order" onclick="nav('new-order')"><span class="icon">➕</span> New Order</div>
+    <div class="nav-item" data-roles="MANAGER,SERVER" data-view="tables" onclick="nav('tables')"><span class="icon">🪑</span> Tables</div>
+    <div class="nav-item" data-roles="MANAGER,SERVER" data-view="waitlist" onclick="nav('waitlist')"><span class="icon">📝</span> Waitlist</div>
+    <div class="nav-item" data-roles="MANAGER,SERVER" data-view="menu" onclick="nav('menu')"><span class="icon">🍽️</span> Menu</div>
 
-    <div class="nav-section role-manager">Manager</div>
-    <div class="nav-item role-manager" data-view="pricing" onclick="nav('pricing')"><span class="icon">💰</span> Update Pricing</div>
+    <div class="nav-section" data-roles="MANAGER">Manager</div>
+    <div class="nav-item" data-roles="MANAGER" data-view="pricing" onclick="nav('pricing')"><span class="icon">💰</span> Update Pricing</div>
 
-    <div class="nav-section role-chef">Kitchen</div>
-    <div class="nav-item role-chef" data-view="menu" onclick="nav('menu')"><span class="icon">🍽️</span> Menu</div>
+    <div class="nav-section" data-roles="CHEF,MANAGER">Kitchen</div>
+    <div class="nav-item" data-roles="CHEF,MANAGER" data-view="kitchen" onclick="nav('kitchen')"><span class="icon">👨‍🍳</span> Kitchen Queue</div>
+    <div class="nav-item" data-roles="CHEF" data-view="orders" onclick="nav('orders')"><span class="icon">📋</span> Orders</div>
+    <div class="nav-item" data-roles="CHEF" data-view="menu" onclick="nav('menu')"><span class="icon">🍽️</span> Menu</div>
 
     <div class="sidebar-footer">
       <div class="sidebar-user">
@@ -218,19 +261,19 @@
     <!-- ORDERS -->
     <div class="view" id="view-orders">
       <div class="view-title">Orders</div>
-      <div class="view-sub">Live order board</div>
-      <div id="stats-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;"></div>
+      <div class="view-sub">Live order board — click any order for details, payment, and item changes</div>
+      <div id="stats-row" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;"></div>
       <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
-          <div class="card-title" style="margin:0">All Orders</div>
+        <div class="card-head">
+          <div class="card-title">All Orders</div>
           <button class="btn btn-ghost btn-sm" onclick="loadOrders()">↻ Refresh</button>
         </div>
         <div id="orders-body"></div>
       </div>
       <div id="order-panel" class="hidden" style="margin-top:20px;">
         <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-            <div class="card-title" style="margin:0" id="panel-title">Order</div>
+          <div class="card-head">
+            <div class="card-title" id="panel-title">Order</div>
             <button class="btn btn-ghost btn-sm" onclick="closePanel()">✕ Close</button>
           </div>
           <div id="panel-body"></div>
@@ -254,7 +297,10 @@
           </div>
           <div id="dinein-f">
             <div class="form-row">
-              <div class="field"><label>Table #</label><input id="no-table" type="number" min="1" max="5" placeholder="1–5"/></div>
+              <div class="field">
+                <label>Table #</label>
+                <select id="no-table"></select>
+              </div>
               <div class="field"><label>Guests</label><input id="no-guests" type="number" min="1" max="6" placeholder="1–6"/></div>
             </div>
           </div>
@@ -272,10 +318,11 @@
           <div class="field"><label>Item</label><select id="ai-item"><option value="">Select item…</option></select></div>
           <div class="form-row">
             <div class="field"><label>Qty</label><input id="ai-qty" type="number" value="1" min="1"/></div>
-            <div class="field"><label>Seat # <span style="color:var(--warm-gray-light)">(0 = takeout)</span></label><input id="ai-seat" type="number" value="1" min="0"/></div>
+            <div class="field"><label>Seat # <span class="small">(0 = takeout)</span></label><input id="ai-seat" type="number" value="1" min="0"/></div>
           </div>
           <button class="btn btn-primary" onclick="doAddItem()">Add Item</button>
           <div id="added-items" style="margin-top:16px;"></div>
+          <button class="btn btn-secondary btn-block" style="margin-top:12px;" onclick="goToOrder()">View Order →</button>
         </div>
       </div>
     </div>
@@ -283,13 +330,34 @@
     <!-- TABLES -->
     <div class="view" id="view-tables">
       <div class="view-title">Tables</div>
-      <div class="view-sub">Current floor status — click an occupied table to view its order</div>
+      <div class="view-sub">Floor status — click any occupied table to manage its order</div>
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
-          <div class="card-title" style="margin:0">Floor Plan</div>
+        <div class="card-head">
+          <div class="card-title">Floor Plan</div>
           <button class="btn btn-ghost btn-sm" onclick="loadTables()">↻ Refresh</button>
         </div>
         <div id="tables-grid" class="table-grid"></div>
+      </div>
+    </div>
+
+    <!-- WAITLIST -->
+    <div class="view" id="view-waitlist">
+      <div class="view-title">Waitlist</div>
+      <div class="view-sub">Manage parties waiting for a table</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Add Party</div>
+          <div class="field"><label>Customer Name</label><input id="wl-name" type="text" placeholder="Full name"/></div>
+          <div class="field"><label>Party Size</label><input id="wl-size" type="number" min="1" max="6" placeholder="1–6"/></div>
+          <button class="btn btn-primary" onclick="doAddWaitlist()">Add to Waitlist</button>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Currently Waiting</div>
+            <button class="btn btn-ghost btn-sm" onclick="loadWaitlist()">↻</button>
+          </div>
+          <div id="waitlist-body"></div>
+        </div>
       </div>
     </div>
 
@@ -298,8 +366,8 @@
       <div class="view-title">Menu</div>
       <div class="view-sub">Current offerings</div>
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <div class="card-title" style="margin:0">Full Menu</div>
+        <div class="card-head">
+          <div class="card-title">Full Menu</div>
           <button class="btn btn-ghost btn-sm" onclick="loadMenu()">↻ Refresh</button>
         </div>
         <div id="menu-body"></div>
@@ -318,6 +386,25 @@
       </div>
     </div>
 
+    <!-- KITCHEN -->
+    <div class="view" id="view-kitchen">
+      <div class="view-title">Kitchen Queue</div>
+      <div class="view-sub">Pending tickets — tap to mark complete</div>
+      <div class="card">
+        <div class="card-head">
+          <div class="row">
+            <div class="card-title">Tickets</div>
+            <select id="k-view" onchange="loadKitchen()" style="width:auto;padding:6px 12px;font-size:13px;">
+              <option value="PENDING_ONLY">Pending only</option>
+              <option value="ALL_ITEMS">All items</option>
+            </select>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="loadKitchen()">↻ Refresh</button>
+        </div>
+        <div id="kitchen-body"></div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -326,17 +413,38 @@
 <script>
 const BASE = "https://p2-5-lule.onrender.com";
 let sess = null;
+let menuCache = {};
 
 // ── SESSION ──────────────────────────────────────
-function saveSession(s) { sess = s; localStorage.setItem('youngs_v2', JSON.stringify(s)); }
-function loadSession()  { try { const r = localStorage.getItem('youngs_v2'); if(r) sess = JSON.parse(r); } catch(e){} return sess; }
-function clearSession() { sess = null; localStorage.removeItem('youngs_v2'); }
+function saveSession(s) { sess = s; localStorage.setItem('youngs_v3', JSON.stringify(s)); }
+function loadSession()  { try { const r = localStorage.getItem('youngs_v3'); if(r) sess = JSON.parse(r); } catch(e){} return sess; }
+function clearSession() { sess = null; localStorage.removeItem('youngs_v3'); }
 
 // ── TOAST ────────────────────────────────────────
 function toast(msg, type='success') {
   const el = document.getElementById('toast');
   el.textContent = msg; el.className = `show ${type}`;
-  clearTimeout(el._t); el._t = setTimeout(() => el.className = '', 3200);
+  clearTimeout(el._t); el._t = setTimeout(() => el.className = '', 3500);
+}
+
+// ── API HELPER ───────────────────────────────────
+async function api(path, options = {}) {
+  try {
+    const res = await fetch(BASE + path, options);
+    return await res.json();
+  } catch(e) {
+    return { success: false, message: 'Network error: ' + e.message, _network: true };
+  }
+}
+
+// Wrap any backend call: if response says "Unauthorized", auto-logout.
+function checkAuth(resp) {
+  if (resp && resp.success === false && /unauthor/i.test(resp.message || '')) {
+    toast('Session expired — please sign in again', 'error');
+    setTimeout(doLogout, 600);
+    return false;
+  }
+  return true;
 }
 
 // ── PAGES / VIEWS ─────────────────────────────────
@@ -347,20 +455,23 @@ function showPage(id) {
 
 function nav(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + name).classList.add('active');
+  const target = document.getElementById('view-' + name);
+  if (target) target.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === name));
   closePanel();
-  if (name === 'orders')  loadOrders();
-  if (name === 'tables')  loadTables();
-  if (name === 'menu')    loadMenu();
+  if (name === 'orders')   loadOrders();
+  if (name === 'tables')   loadTables();
+  if (name === 'menu')     loadMenu();
+  if (name === 'kitchen')  loadKitchen();
+  if (name === 'waitlist') loadWaitlist();
 }
 
 // ── ROLE UI ───────────────────────────────────────
 function applyRole(role) {
-  const show = { MANAGER:['role-manager','role-server'], SERVER:['role-server'], CHEF:['role-chef'] };
-  (show[role] || []).forEach(cls =>
-    document.querySelectorAll('.' + cls).forEach(el => el.style.display = 'flex')
-  );
+  document.querySelectorAll('[data-roles]').forEach(el => {
+    const allowed = el.dataset.roles.split(',');
+    el.style.display = allowed.includes(role) ? 'flex' : 'none';
+  });
 }
 
 function initApp() {
@@ -368,13 +479,10 @@ function initApp() {
   document.getElementById('sb-avatar').textContent = sess.username[0].toUpperCase();
   document.getElementById('sb-role').textContent   = sess.role;
   applyRole(sess.role);
+  populateTableSelect();
   showPage('app');
-  const first = sess.role === 'CHEF' ? 'menu' : 'orders';
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === first));
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + first).classList.add('active');
-  if (first === 'orders') loadOrders();
-  if (first === 'menu')   loadMenu();
+  const first = sess.role === 'CHEF' ? 'kitchen' : 'orders';
+  nav(first);
   fetchMenuForSelects();
 }
 
@@ -394,95 +502,102 @@ async function doLogin() {
 
   btn.innerHTML = '<span class="spinner"></span>'; btn.disabled = true;
 
-  try {
-    const res  = await fetch(BASE + '/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await res.json();
-    if (data.success) {
-      saveSession({ token: data.session_token, username, role: data.role });
-      initApp();
-    } else {
-      errEl.textContent = data.message || 'Invalid credentials.';
-      errEl.style.display = 'block';
-    }
-  } catch(e) {
-    errEl.textContent = 'Cannot reach server. Try again shortly.';
+  const data = await api('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
+
+  if (data.success) {
+    saveSession({ token: data.session_token, username, role: data.role });
+    initApp();
+  } else {
+    errEl.textContent = data._network
+      ? 'Cannot reach server. Render free tier may be waking up — try again in 30s.'
+      : (data.message || 'Invalid credentials.');
     errEl.style.display = 'block';
   }
 
   btn.innerHTML = 'Sign In'; btn.disabled = false;
 }
 
-function doLogout() {
+async function doLogout() {
+  if (sess) {
+    // best-effort logout
+    api('/logout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_token: sess.token })
+    });
+  }
   clearSession();
-  document.querySelectorAll('.role-manager,.role-server,.role-chef').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('[data-roles]').forEach(el => el.style.display = 'none');
   document.getElementById('login-err').style.display = 'none';
   document.getElementById('u').value = '';
   document.getElementById('p').value = '';
   showPage('login');
 }
 
-// ── ORDERS ────────────────────────────────────────
+// ── ORDERS LIST ───────────────────────────────────
 async function loadOrders() {
   const body = document.getElementById('orders-body');
   body.innerHTML = '<div class="empty"><div class="ei">⏳</div><p>Loading…</p></div>';
-  try {
-    const res  = await fetch(BASE + '/orders');
-    const data = await res.json();
 
-    if (!data.success) {
-      body.innerHTML = `<div class="empty"><p>${data.message}</p></div>`;
-      return;
-    }
+  const data = await api('/orders');
+  if (!checkAuth(data)) return;
 
-    const orders = data.orders || [];
-    updateStats(orders);
-
-    if (!orders.length) {
-      body.innerHTML = '<div class="empty"><div class="ei">📋</div><p>No orders yet</p></div>';
-      return;
-    }
-
-    body.innerHTML = `
-      <table class="data-table">
-        <thead><tr>
-          <th>Order #</th><th>Type</th><th>Table / Name</th><th>Items</th><th></th>
-        </tr></thead>
-        <tbody>
-          ${orders.map(o => {
-            const isIn = o.type === 'dine_in';
-            const who  = isIn ? `Table ${o.table_number}` : (o.customer_name || '—');
-            const badge = isIn
-              ? `<span class="badge badge-dinein">Dine-In</span>`
-              : `<span class="badge badge-takeout">Take-Out</span>`;
-            const count = (o.items || []).reduce((s,i) => s + i.quantity, 0);
-            return `<tr>
-              <td><strong>#${o.order_id}</strong></td>
-              <td>${badge}</td>
-              <td>${who}</td>
-              <td>${count} item${count !== 1 ? 's' : ''}</td>
-              <td><button class="btn btn-ghost btn-sm" onclick="viewOrderDetail(${o.order_id})">View</button></td>
-            </tr>`;
-          }).join('')}
-        </tbody>
-      </table>`;
-  } catch(e) {
-    body.innerHTML = `<div class="empty"><p>Error: ${e.message}</p></div>`;
+  if (!data.success) {
+    body.innerHTML = `<div class="empty"><p>${data.message}</p></div>`;
+    return;
   }
+
+  const orders = data.orders || [];
+  updateStats(orders);
+
+  if (!orders.length) {
+    body.innerHTML = '<div class="empty"><div class="ei">📋</div><p>No orders yet</p></div>';
+    return;
+  }
+
+  body.innerHTML = `
+    <table class="data-table">
+      <thead><tr>
+        <th>Order #</th><th>Type</th><th>Status</th><th>Table / Name</th><th>Items</th><th>Total</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${orders.map(o => {
+          const isIn = o.type === 'dine_in';
+          const who  = isIn ? `Table ${o.table_number} · ${o.guests}g` : (o.customer_name || '—');
+          const badge = isIn
+            ? `<span class="badge badge-dinein">Dine-In</span>`
+            : `<span class="badge badge-takeout">Take-Out</span>`;
+          const count = (o.items || []).reduce((s,i) => s + i.quantity, 0);
+          return `<tr>
+            <td><strong>#${o.order_id}</strong></td>
+            <td>${badge}</td>
+            <td><span class="badge status-${o.status}">${(o.status||'').replace('_',' ')}</span></td>
+            <td>${who}</td>
+            <td>${count}</td>
+            <td>$${Number(o.total).toFixed(2)}</td>
+            <td><button class="btn btn-ghost btn-sm" onclick="viewOrderDetail(${o.order_id})">Open</button></td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
 }
 
 function updateStats(orders) {
   const dineIn  = orders.filter(o => o.type === 'dine_in').length;
   const takeOut = orders.filter(o => o.type === 'take_out').length;
+  const open    = orders.filter(o => o.status !== 'PAID').length;
   document.getElementById('stats-row').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value">${orders.length}</div><div class="stat-sub">All active</div></div>
+    <div class="stat-card"><div class="stat-label">All Orders</div><div class="stat-value">${orders.length}</div><div class="stat-sub">Total today</div></div>
+    <div class="stat-card"><div class="stat-label">Open</div><div class="stat-value">${open}</div><div class="stat-sub">Unpaid / in progress</div></div>
     <div class="stat-card"><div class="stat-label">Dine-In</div><div class="stat-value">${dineIn}</div><div class="stat-sub">At tables</div></div>
-    <div class="stat-card"><div class="stat-label">Take-Out</div><div class="stat-value">${takeOut}</div><div class="stat-sub">Pick-up orders</div></div>`;
+    <div class="stat-card"><div class="stat-label">Take-Out</div><div class="stat-value">${takeOut}</div><div class="stat-sub">Pick-up</div></div>`;
 }
 
+// ── ORDER DETAIL PANEL ────────────────────────────
 async function viewOrderDetail(orderId) {
   const panel = document.getElementById('order-panel');
   const body  = document.getElementById('panel-body');
@@ -491,69 +606,201 @@ async function viewOrderDetail(orderId) {
   body.innerHTML = '<div class="empty"><p>Loading…</p></div>';
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-  try {
-    const res  = await fetch(BASE + '/orders/' + orderId);
-    const data = await res.json();
+  const data = await api('/orders/' + orderId);
+  if (!checkAuth(data)) return;
+  if (!data.success) { body.innerHTML = `<p style="color:var(--error)">${data.message}</p>`; return; }
 
-    if (!data.success) {
-      body.innerHTML = `<p style="color:var(--error)">${data.message}</p>`;
-      return;
-    }
+  const o     = data.order;
+  const items = o.items || [];
+  const isIn  = o.type === 'dine_in';
+  const isPaid = data.fully_paid;
+  const isChef = sess.role === 'CHEF';
+  const canEdit = (sess.role === 'MANAGER' || sess.role === 'SERVER') && !isPaid;
 
-    const o     = data.order;
-    const items = o.items || [];
-    const isIn  = o.type === 'dine_in';
-    const badge = isIn
-      ? `<span class="badge badge-dinein">Dine-In</span>`
-      : `<span class="badge badge-takeout">Take-Out</span>`;
-    const who = isIn ? `Table ${o.table_number} · ${o.guests} guest${o.guests !== 1 ? 's' : ''}` : o.customer_name;
+  const badge = isIn
+    ? `<span class="badge badge-dinein">Dine-In</span>`
+    : `<span class="badge badge-takeout">Take-Out</span>`;
+  const statusBadge = `<span class="badge status-${o.status}">${(o.status||'').replace('_',' ')}</span>`;
+  const who = isIn ? `Table ${o.table_number} · ${o.guests} guest${o.guests!==1?'s':''}` : o.customer_name;
 
-    const itemsHtml = items.length
-      ? items.map(it => `
+  // line items
+  const itemsHtml = items.length
+    ? items.map((it, idx) => {
+        const seatLabel = isIn ? `Seat ${it.seat_number}` : 'Take-out';
+        const kStatus = it.sent_to_kitchen
+          ? `<span class="badge status-${it.kitchen_status}" style="margin-left:6px;">${it.kitchen_status}</span>`
+          : '';
+        const removeBtn = canEdit
+          ? `<button class="btn btn-danger btn-xs" onclick="doRemoveItem(${o.order_id}, '${it.item_name.replace(/'/g,"\\'")}', ${it.quantity}, ${it.seat_number})" title="Remove this line">−</button>`
+          : '';
+        return `
           <div class="order-line">
-            <div>
-              <div style="font-weight:500">${it.item_name} × ${it.quantity}</div>
-              <div class="line-meta">${isIn ? `Seat ${it.seat_number}` : 'Take-out'} · $${Number(it.unit_price).toFixed(2)} each</div>
+            <div class="grow">
+              <div style="font-weight:500">${it.item_name} × ${it.quantity} ${kStatus}</div>
+              <div class="line-meta">${seatLabel} · $${Number(it.unit_price).toFixed(2)} each</div>
             </div>
-            <div style="font-weight:500">$${Number(it.line_total).toFixed(2)}</div>
-          </div>`).join('')
-      : '<div style="color:var(--warm-gray);font-size:14px;padding:8px 0;">No items yet</div>';
+            <div style="font-weight:500;white-space:nowrap;">$${Number(it.line_total).toFixed(2)}</div>
+            ${removeBtn}
+          </div>`;
+      }).join('')
+    : '<div style="color:var(--warm-gray);font-size:14px;padding:8px 0;">No items yet</div>';
 
-    let seatsHtml = '';
-    if (isIn && data.seat_totals?.length) {
-      seatsHtml = `<div style="margin-top:16px;">
-        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:8px;">Per Seat</div>
-        ${data.seat_totals.map(s => `
-          <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;">
-            <span>Seat ${s.seat_number} ${s.fully_paid ? '✅' : ''}</span>
-            <span>$${Number(s.total).toFixed(2)}${s.remaining > 0 ? ` <span style="color:var(--error);font-size:12px;">(owes $${Number(s.remaining).toFixed(2)})</span>` : ''}</span>
-          </div>`).join('')}
-      </div>`;
-    }
-
-    body.innerHTML = `
-      <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
-        ${badge}
-        <span style="font-size:13px;color:var(--warm-gray);">${who}</span>
-      </div>
-      <div class="order-detail">
-        ${itemsHtml}
-        <div class="total-row"><span>Total</span><span>$${Number(data.total).toFixed(2)}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:14px;color:var(--warm-gray);">
-          <span>Paid</span><span>$${Number(data.paid).toFixed(2)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:14px;color:${data.remaining > 0 ? 'var(--error)' : 'var(--success)'};">
-          <span>Remaining</span><span>$${Number(data.remaining).toFixed(2)}</span>
-        </div>
-      </div>
-      ${seatsHtml}`;
-  } catch(e) {
-    body.innerHTML = `<p style="color:var(--error)">Error: ${e.message}</p>`;
+  // per-seat block
+  let seatsHtml = '';
+  if (isIn && data.seat_totals?.length) {
+    seatsHtml = `<div style="margin-top:18px;">
+      <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:8px;">Per Seat</div>
+      ${data.seat_totals.map(s => {
+        const remColor = s.remaining > 0 ? 'var(--error)' : 'var(--success)';
+        const payBtn = (canEdit && s.remaining > 0)
+          ? `<button class="btn btn-secondary btn-xs" onclick="doCashout(${o.order_id}, 'SEAT', ${s.seat_number})">Pay $${Number(s.remaining).toFixed(2)}</button>`
+          : (s.fully_paid ? `<span class="badge status-PAID">Paid</span>` : '');
+        return `<div class="seat-block">
+          <div class="seat-head">
+            <div class="seat-name">Seat ${s.seat_number}</div>
+            ${payBtn}
+          </div>
+          <div class="row" style="font-size:13px;">
+            <div class="grow">Total: <strong>$${Number(s.total).toFixed(2)}</strong></div>
+            <div class="grow">Paid: $${Number(s.paid).toFixed(2)}</div>
+            <div class="grow" style="color:${remColor}">Owes: $${Number(s.remaining).toFixed(2)}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
   }
+
+  // action buttons
+  const actions = [];
+  if (canEdit && !isPaid) {
+    if (isIn) {
+      actions.push(`<button class="btn btn-success btn-sm" onclick="doCashout(${o.order_id}, 'TABLE', 0)">💳 Pay Entire Table ($${Number(data.remaining).toFixed(2)})</button>`);
+    } else {
+      actions.push(`<button class="btn btn-success btn-sm" onclick="doCashout(${o.order_id}, 'TAKEOUT_ORDER', 0)">💳 Pay ($${Number(data.remaining).toFixed(2)})</button>`);
+    }
+    actions.push(`<button class="btn btn-secondary btn-sm" onclick="openAddItemFor(${o.order_id}, ${isIn ? o.guests : 0}, '${isIn ? "dine_in" : "take_out"}')">+ Add Item</button>`);
+  }
+  if ((isChef || sess.role === 'MANAGER') && o.status !== 'PAID' && o.status !== 'READY') {
+    actions.push(`<button class="btn btn-secondary btn-sm" onclick="doMarkReady(${o.order_id})">Mark Ready</button>`);
+  }
+
+  body.innerHTML = `
+    <div class="row" style="margin-bottom:14px;">
+      ${badge} ${statusBadge}
+      <span class="small">${who}</span>
+    </div>
+    <div class="order-detail">
+      ${itemsHtml}
+      <div class="total-row"><span>Total</span><span>$${Number(data.total).toFixed(2)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:14px;color:var(--warm-gray);">
+        <span>Paid</span><span>$${Number(data.paid).toFixed(2)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:14px;color:${data.remaining > 0 ? 'var(--error)' : 'var(--success)'};font-weight:500;">
+        <span>Remaining</span><span>$${Number(data.remaining).toFixed(2)}</span>
+      </div>
+    </div>
+    ${seatsHtml}
+    ${actions.length ? `<div class="row" style="margin-top:18px;">${actions.join('')}</div>` : ''}
+    <div id="inline-add-item" class="hidden" style="margin-top:18px;"></div>`;
 }
 
 function closePanel() {
   document.getElementById('order-panel').classList.add('hidden');
+}
+
+function openAddItemFor(orderId, guests, type) {
+  const box = document.getElementById('inline-add-item');
+  const opts = Object.entries(menuCache)
+    .filter(([, v]) => v.available)
+    .map(([n, v]) => `<option value="${n}">${n} — $${Number(v.price).toFixed(2)}</option>`)
+    .join('');
+  const seatField = type === 'dine_in'
+    ? `<div class="field"><label>Seat (1–${guests})</label><input id="ila-seat" type="number" min="1" max="${guests}" value="1"/></div>`
+    : `<input id="ila-seat" type="hidden" value="0"/>`;
+  box.classList.remove('hidden');
+  box.innerHTML = `
+    <div class="card" style="background:var(--cream);box-shadow:none;">
+      <div class="card-title">Add Item</div>
+      <div class="field"><label>Item</label><select id="ila-item">${opts}</select></div>
+      <div class="form-row">
+        <div class="field"><label>Qty</label><input id="ila-qty" type="number" value="1" min="1"/></div>
+        ${seatField}
+      </div>
+      <div class="row">
+        <button class="btn btn-primary btn-sm" onclick="doInlineAddItem(${orderId})">Add</button>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('inline-add-item').classList.add('hidden')">Cancel</button>
+      </div>
+    </div>`;
+}
+
+async function doInlineAddItem(orderId) {
+  const item = document.getElementById('ila-item').value;
+  const qty  = parseInt(document.getElementById('ila-qty').value);
+  const seat = parseInt(document.getElementById('ila-seat').value);
+  if (!item || !qty) { toast('Fill all fields', 'error'); return; }
+
+  const data = await api('/orders/add-item', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_token: sess.token, order_id: orderId, item_name: item, quantity: qty, seat_number: seat })
+  });
+  if (!checkAuth(data)) return;
+  if (data.success) {
+    toast(data.message);
+    viewOrderDetail(orderId);
+  } else {
+    toast(data.message, 'error');
+  }
+}
+
+async function doRemoveItem(orderId, itemName, qty, seat) {
+  const removeQty = prompt(`Remove how many "${itemName}"? (1–${qty})`, '1');
+  if (!removeQty) return;
+  const n = parseInt(removeQty);
+  if (!n || n < 1 || n > qty) { toast('Invalid quantity', 'error'); return; }
+
+  const data = await api('/orders/remove-item', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_token: sess.token, order_id: orderId, item_name: itemName, quantity: n, seat_number: seat })
+  });
+  if (!checkAuth(data)) return;
+  if (data.success) {
+    toast(data.message);
+    viewOrderDetail(orderId);
+  } else {
+    toast(data.message, 'error');
+  }
+}
+
+async function doCashout(orderId, target, seatNumber) {
+  if (!confirm(`Confirm payment?`)) return;
+
+  const data = await api('/orders/cashout', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_token: sess.token, order_id: orderId, payment_target: target, seat_number: seatNumber })
+  });
+  if (!checkAuth(data)) return;
+
+  if (data.success) {
+    toast(`💳 Charged $${Number(data.amount_charged).toFixed(2)} — ${data.status}`);
+    viewOrderDetail(orderId);
+    if (data.status === 'PAID') setTimeout(loadOrders, 800);
+  } else {
+    toast(data.message, 'error');
+  }
+}
+
+async function doMarkReady(orderId) {
+  const data = await api('/orders/mark-ready', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_token: sess.token, order_id: orderId })
+  });
+  if (!checkAuth(data)) return;
+  if (data.success) {
+    toast(data.message);
+    viewOrderDetail(orderId);
+  } else {
+    toast(data.message, 'error');
+  }
 }
 
 // ── NEW ORDER ─────────────────────────────────────
@@ -561,6 +808,14 @@ function toggleType() {
   const t = document.getElementById('no-type').value;
   document.getElementById('dinein-f').classList.toggle('hidden', t !== 'dine_in');
   document.getElementById('takeout-f').classList.toggle('hidden', t !== 'take_out');
+}
+
+function populateTableSelect() {
+  const sel = document.getElementById('no-table');
+  if (!sel) return;
+  // populated dynamically when tables load; for now placeholder
+  sel.innerHTML = '<option value="">Choose…</option>' +
+    [1,2,3,4,5].map(n => `<option value="${n}">Table ${n}</option>`).join('');
 }
 
 async function doCreateOrder() {
@@ -571,32 +826,31 @@ async function doCreateOrder() {
   if (type === 'dine_in') {
     const t = parseInt(document.getElementById('no-table').value);
     const g = parseInt(document.getElementById('no-guests').value);
-    if (!t || !g) { toast('Enter table and guest count', 'error'); return; }
+    if (!t || !g) { toast('Pick a table and enter guest count', 'error'); return; }
     payload.table_number = t;
     payload.guests = g;
   } else {
     const n = document.getElementById('no-name').value.trim();
-    if (!n) { toast('Enter customer name', 'error'); return; }
+    if (!n) { toast('Enter a customer name', 'error'); return; }
     payload.customer_name = n;
   }
 
-  try {
-    const res  = await fetch(BASE + '/orders', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (data.success) {
-      toast(`Order #${data.order_id} created!`);
-      document.getElementById('cur-order-id').textContent = data.order_id;
-      const card = document.getElementById('add-item-card');
-      card.style.opacity = '1'; card.style.pointerEvents = 'all';
-      document.getElementById('ai-seat').value = type === 'take_out' ? 0 : 1;
-      document.getElementById('added-items').innerHTML = '';
-    } else {
-      toast(data.message, 'error');
-    }
-  } catch(e) { toast('Network error: ' + e.message, 'error'); }
+  const data = await api('/orders', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (!checkAuth(data)) return;
+
+  if (data.success) {
+    toast(`Order #${data.order_id} created`);
+    document.getElementById('cur-order-id').textContent = data.order_id;
+    const card = document.getElementById('add-item-card');
+    card.style.opacity = '1'; card.style.pointerEvents = 'all';
+    document.getElementById('ai-seat').value = type === 'take_out' ? 0 : 1;
+    document.getElementById('added-items').innerHTML = '';
+  } else {
+    toast(data.message, 'error');
+  }
 }
 
 async function doAddItem() {
@@ -611,47 +865,49 @@ async function doAddItem() {
   if (!item) { toast('Select a menu item', 'error'); return; }
   if (!qty || qty < 1) { toast('Enter a valid quantity', 'error'); return; }
 
-  try {
-    const res  = await fetch(BASE + '/orders/add-item', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_token: sess.token, order_id: parseInt(orderId), item_name: item, quantity: qty, seat_number: seat })
-    });
-    const data = await res.json();
-    if (data.success) {
-      toast(`${item} × ${qty} added`);
-      const list = document.getElementById('added-items');
-      const row  = document.createElement('div');
-      row.style.cssText = 'display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);';
-      row.innerHTML = `<span>${item} × ${qty}${seat > 0 ? ` <span style="color:var(--warm-gray)">(seat ${seat})</span>` : ''}</span>`;
-      list.appendChild(row);
-    } else {
-      toast(data.message, 'error');
-    }
-  } catch(e) { toast('Network error: ' + e.message, 'error'); }
+  const data = await api('/orders/add-item', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_token: sess.token, order_id: parseInt(orderId), item_name: item, quantity: qty, seat_number: seat })
+  });
+  if (!checkAuth(data)) return;
+
+  if (data.success) {
+    toast(data.message);
+    const list = document.getElementById('added-items');
+    const row  = document.createElement('div');
+    row.style.cssText = 'display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);';
+    row.innerHTML = `<span>${item} × ${qty}${seat > 0 ? ` <span class="small">(seat ${seat})</span>` : ''}</span>`;
+    list.appendChild(row);
+  } else {
+    toast(data.message, 'error');
+  }
+}
+
+function goToOrder() {
+  const id = document.getElementById('cur-order-id').textContent;
+  if (id === '—') return;
+  nav('orders');
+  setTimeout(() => viewOrderDetail(parseInt(id)), 200);
 }
 
 // ── TABLES ────────────────────────────────────────
 async function loadTables() {
   const grid = document.getElementById('tables-grid');
   grid.innerHTML = '<div class="empty"><p>Loading…</p></div>';
-  try {
-    const res  = await fetch(BASE + '/tables');
-    const data = await res.json();
-    if (!data.success) { grid.innerHTML = '<p>Error loading tables</p>'; return; }
+  const data = await api('/tables');
+  if (!data.success) { grid.innerHTML = '<p>Error loading tables</p>'; return; }
 
-    // data.tables is a dict keyed by table number
-    const entries = Object.entries(data.tables);
-    grid.innerHTML = entries.map(([num, t]) => {
-      const occ = t.occupied;
-      const clickable = occ && t.order_id;
-      return `<div class="table-tile ${occ ? 'occupied' : 'free'} ${clickable ? 'clickable' : ''}"
-               ${clickable ? `onclick="showTableOrder(${t.order_id})"` : ''}>
-        <div class="table-number">${num}</div>
-        <div class="table-cap">Up to ${t.capacity} guests</div>
-        <div class="table-status ${occ ? '' : 'free-status'}">${occ ? `🔴 Order #${t.order_id}` : '🟢 Available'}</div>
-      </div>`;
-    }).join('');
-  } catch(e) { grid.innerHTML = `<div class="empty"><p>Error: ${e.message}</p></div>`; }
+  const entries = Object.entries(data.tables);
+  grid.innerHTML = entries.map(([num, t]) => {
+    const occ = t.occupied;
+    const clickable = occ && t.order_id;
+    return `<div class="table-tile ${occ ? 'occupied' : 'free'} ${clickable ? 'clickable' : ''}"
+             ${clickable ? `onclick="showTableOrder(${t.order_id})"` : ''}>
+      <div class="table-number">${num}</div>
+      <div class="table-cap">Up to ${t.capacity} guests</div>
+      <div class="table-status ${occ ? '' : 'free-status'}">${occ ? `🔴 Order #${t.order_id}` : '🟢 Available'}</div>
+    </div>`;
+  }).join('');
 }
 
 function showTableOrder(orderId) {
@@ -659,50 +915,117 @@ function showTableOrder(orderId) {
   setTimeout(() => viewOrderDetail(orderId), 200);
 }
 
+// ── WAITLIST ──────────────────────────────────────
+async function loadWaitlist() {
+  const body = document.getElementById('waitlist-body');
+  body.innerHTML = '<div class="empty"><p>Loading…</p></div>';
+  const data = await api('/waitlist');
+  if (!data.success) { body.innerHTML = '<p>Error</p>'; return; }
+  const entries = data.entries || [];
+  if (!entries.length) {
+    body.innerHTML = '<div class="empty"><div class="ei">📝</div><p>No parties waiting</p></div>';
+    return;
+  }
+
+  // need tables to know which are available
+  const tablesResp = await api('/tables');
+  const tables = tablesResp.success ? tablesResp.tables : {};
+
+  body.innerHTML = entries.map(e => {
+    const fittingTables = Object.entries(tables)
+      .filter(([, t]) => !t.occupied && t.capacity >= e.party_size)
+      .map(([n]) => `<option value="${n}">Table ${n}</option>`)
+      .join('');
+    const seatControl = fittingTables
+      ? `<select id="seat-tbl-${e.waitlist_id}" style="width:auto;font-size:13px;padding:6px 10px;">${fittingTables}</select>
+         <button class="btn btn-success btn-xs" onclick="doSeatParty(${e.waitlist_id})">Seat</button>`
+      : `<span class="small" style="color:var(--error);">No fitting table free</span>`;
+    return `<div class="seat-block">
+      <div class="seat-head">
+        <div>
+          <div class="seat-name">${e.customer_name}</div>
+          <div class="small">Party of ${e.party_size} · ${e.timestamp}</div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:6px;">${seatControl}</div>
+    </div>`;
+  }).join('');
+}
+
+async function doAddWaitlist() {
+  const name = document.getElementById('wl-name').value.trim();
+  const size = parseInt(document.getElementById('wl-size').value);
+  if (!name || !size) { toast('Enter name and party size', 'error'); return; }
+
+  const data = await api('/waitlist/add', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_token: sess.token, customer_name: name, party_size: size })
+  });
+  if (!checkAuth(data)) return;
+  if (data.success) {
+    toast(`${name} added to waitlist`);
+    document.getElementById('wl-name').value = '';
+    document.getElementById('wl-size').value = '';
+    loadWaitlist();
+  } else {
+    toast(data.message, 'error');
+  }
+}
+
+async function doSeatParty(waitlistId) {
+  const tableNum = parseInt(document.getElementById(`seat-tbl-${waitlistId}`).value);
+  if (!tableNum) { toast('Pick a table', 'error'); return; }
+
+  const data = await api('/waitlist/seat', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_token: sess.token, waitlist_id: waitlistId, table_number: tableNum })
+  });
+  if (!checkAuth(data)) return;
+  if (data.success) {
+    toast(data.message);
+    loadWaitlist();
+  } else {
+    toast(data.message, 'error');
+  }
+}
+
 // ── MENU ──────────────────────────────────────────
 async function loadMenu() {
   const body = document.getElementById('menu-body');
   body.innerHTML = '<div class="empty"><p>Loading…</p></div>';
-  try {
-    const res  = await fetch(BASE + '/menu');
-    const data = await res.json();
-    if (!data.success) { body.innerHTML = '<p>Error loading menu</p>'; return; }
+  const data = await api('/menu');
+  if (!data.success) { body.innerHTML = '<p>Error loading menu</p>'; return; }
 
-    // data.menu is an object: { "Cheeseburger": { category, price, available }, ... }
-    const menu = data.menu;
-    const cats = {};
-    Object.entries(menu).forEach(([name, item]) => {
-      const cat = (item.category || 'OTHER').toUpperCase();
-      if (!cats[cat]) cats[cat] = [];
-      cats[cat].push({ name, ...item });
-    });
+  const menu = data.menu;
+  menuCache = menu;
+  const cats = {};
+  Object.entries(menu).forEach(([name, item]) => {
+    const cat = (item.category || 'OTHER').toUpperCase();
+    if (!cats[cat]) cats[cat] = [];
+    cats[cat].push({ name, ...item });
+  });
 
-    const order  = ['STARTER','MAIN','DESSERT','DRINK','OTHER'];
-    const labels = { STARTER:'Starters', MAIN:'Mains', DESSERT:'Desserts', DRINK:'Drinks', OTHER:'Other' };
+  const order  = ['STARTER','MAIN','DESSERT','DRINK','OTHER'];
+  const labels = { STARTER:'Starters', MAIN:'Mains', DESSERT:'Desserts', DRINK:'Drinks', OTHER:'Other' };
 
-    body.innerHTML = order.filter(c => cats[c]).map(cat => `
-      <div class="menu-cat">${labels[cat]}</div>
-      ${cats[cat].map(i => `
-        <div class="menu-row">
-          <div>
-            <div class="menu-name">${i.name}</div>
-            ${!i.available ? '<div style="font-size:11px;color:var(--error);">Unavailable</div>' : ''}
-          </div>
-          <div class="menu-price">$${Number(i.price).toFixed(2)}</div>
-        </div>`).join('')}`
-    ).join('');
+  body.innerHTML = order.filter(c => cats[c]).map(cat => `
+    <div class="menu-cat">${labels[cat]}</div>
+    ${cats[cat].map(i => `
+      <div class="menu-row">
+        <div>
+          <div class="menu-name">${i.name}</div>
+          ${!i.available ? '<div style="font-size:11px;color:var(--error);">Unavailable</div>' : ''}
+        </div>
+        <div class="menu-price">$${Number(i.price).toFixed(2)}</div>
+      </div>`).join('')}`
+  ).join('');
 
-    // also refresh selects
-    populateSelects(menu);
-  } catch(e) { body.innerHTML = `<div class="empty"><p>Error: ${e.message}</p></div>`; }
+  populateSelects(menu);
 }
 
 async function fetchMenuForSelects() {
-  try {
-    const res  = await fetch(BASE + '/menu');
-    const data = await res.json();
-    if (data.success) populateSelects(data.menu);
-  } catch(e) {}
+  const data = await api('/menu');
+  if (data.success) { menuCache = data.menu; populateSelects(data.menu); }
 }
 
 function populateSelects(menu) {
@@ -725,19 +1048,67 @@ async function doUpdatePrice() {
   if (!item)              { toast('Select an item', 'error'); return; }
   if (isNaN(price) || price < 0) { toast('Enter a valid price', 'error'); return; }
 
-  try {
-    const res  = await fetch(BASE + '/menu/update-price', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_token: sess.token, item_name: item, new_price: price })
-    });
-    const data = await res.json();
-    if (data.success) {
-      toast(`${item} updated to $${price.toFixed(2)}`);
-      fetchMenuForSelects();
-    } else {
-      toast(data.message, 'error');
-    }
-  } catch(e) { toast('Network error: ' + e.message, 'error'); }
+  const data = await api('/menu/update-price', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_token: sess.token, item_name: item, new_price: price })
+  });
+  if (!checkAuth(data)) return;
+
+  if (data.success) {
+    toast(data.message);
+    fetchMenuForSelects();
+  } else {
+    toast(data.message, 'error');
+  }
+}
+
+// ── KITCHEN ───────────────────────────────────────
+async function loadKitchen() {
+  const body = document.getElementById('kitchen-body');
+  body.innerHTML = '<div class="empty"><p>Loading…</p></div>';
+  const view = document.getElementById('k-view').value;
+  const data = await api('/kitchen?view_type=' + view);
+  if (!data.success) { body.innerHTML = `<p>${data.message || 'Error'}</p>`; return; }
+
+  const items = data.items || [];
+  if (!items.length) {
+    body.innerHTML = '<div class="empty"><div class="ei">👨‍🍳</div><p>Kitchen is clear</p></div>';
+    return;
+  }
+
+  body.innerHTML = items.map(it => {
+    const who = it.table_number > 0
+      ? `Table ${it.table_number}${it.seat_number > 0 ? ` · Seat ${it.seat_number}` : ''}`
+      : `Take-out${it.customer_name ? ` · ${it.customer_name}` : ''}`;
+    const isPending = it.status === 'PENDING';
+    const completeBtn = isPending
+      ? `<button class="btn btn-success btn-sm" onclick="doCompleteKitchen(${it.kitchen_item_id})">✓ Mark Complete</button>`
+      : '';
+    return `<div class="kitchen-card">
+      <div class="kitchen-head">
+        <div>
+          <div class="kitchen-item-name">${it.item_name} × ${it.quantity}</div>
+          <div class="kitchen-meta">Order #${it.order_id} · ${who} · ${it.timestamp}</div>
+        </div>
+        <span class="badge status-${it.status}">${it.status}</span>
+      </div>
+      ${completeBtn ? `<div class="kitchen-actions">${completeBtn}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+async function doCompleteKitchen(kitchenItemId) {
+  const data = await api('/kitchen/complete', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_token: sess.token, kitchen_item_id: kitchenItemId })
+  });
+  if (!checkAuth(data)) return;
+  if (data.success) {
+    toast(data.message);
+    loadKitchen();
+  } else {
+    toast(data.message, 'error');
+  }
 }
 
 // ── BOOT ──────────────────────────────────────────
