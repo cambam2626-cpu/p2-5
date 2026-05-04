@@ -1,1 +1,94 @@
-<h1>Restaurant App Coming Soon</h1>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Restaurant App</title>
+</head>
+<body>
+  <h1>Restaurant System</h1>
+
+  <h2>Login</h2>
+  <input id="username" placeholder="username" value="server2">
+  <input id="password" placeholder="password" value="pw">
+  <button onclick="login()">Login</button>
+
+  <h2>Create Order</h2>
+  <input id="type" placeholder="dine_in or take_out">
+  <input id="table" placeholder="table number">
+  <input id="guests" placeholder="guests">
+  <input id="name" placeholder="name (takeout only)">
+  <button onclick="createOrder()">Create</button>
+
+  <h2>Add Item</h2>
+  <input id="order_id" placeholder="order id">
+  <input id="item" placeholder="item name">
+  <input id="qty" placeholder="qty">
+  <input id="seat" placeholder="seat (0 for takeout)">
+  <button onclick="addItem()">Add</button>
+
+  <h2>View Order</h2>
+  <input id="view_id" placeholder="order id">
+  <button onclick="viewOrder()">View</button>
+
+  <pre id="output"></pre>
+
+<script>
+let token = "";
+
+const BASE = "https://p2-5-lule.onrender.com";
+
+async function login() {
+  const res = await fetch(BASE + "/login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value
+    })
+  });
+  const data = await res.json();
+  token = data.session_token;
+  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+}
+
+async function createOrder() {
+  const res = await fetch(BASE + "/orders", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      session_token: token,
+      order_type: document.getElementById("type").value,
+      table_number: parseInt(document.getElementById("table").value || 0),
+      guests: parseInt(document.getElementById("guests").value || 0),
+      customer_name: document.getElementById("name").value
+    })
+  });
+  const data = await res.json();
+  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+}
+
+async function addItem() {
+  const res = await fetch(BASE + "/orders/add-item", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      session_token: token,
+      order_id: parseInt(document.getElementById("order_id").value),
+      item_name: document.getElementById("item").value,
+      quantity: parseInt(document.getElementById("qty").value),
+      seat_number: parseInt(document.getElementById("seat").value)
+    })
+  });
+  const data = await res.json();
+  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+}
+
+async function viewOrder() {
+  const id = document.getElementById("view_id").value;
+  const res = await fetch(BASE + "/orders/" + id);
+  const data = await res.json();
+  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+}
+</script>
+
+</body>
+</html>
