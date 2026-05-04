@@ -1,0 +1,357 @@
+syntax = "proto3";
+
+package restaurant;
+
+enum OrderType {
+  DINE_IN = 0;
+  TAKE_OUT = 1;
+}
+
+enum Category {
+  STARTER = 0;
+  MAIN = 1;
+  DESSERT = 2;
+  DRINK = 3;
+}
+
+enum OrderStatus {
+  PLACED = 0;
+  READY = 1;
+  PARTIALLY_PAID = 2;
+  PAID = 3;
+}
+
+enum KitchenItemStatus {
+  PENDING = 0;
+  COMPLETED = 1;
+}
+
+enum KitchenViewType {
+  PENDING_ONLY = 0;
+  ALL_ITEMS = 1;
+}
+
+enum PaymentTargetType {
+  SEAT = 0;
+  TABLE = 1;
+  TAKEOUT_ORDER = 2;
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  bool success = 1;
+  string message = 2;
+  string session_token = 3;
+}
+
+message LogoutRequest {
+  string session_token = 1;
+}
+
+message LogoutResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message MenuRequest {
+  string session_token = 1;
+}
+
+message MenuItem {
+  string name = 1;
+  Category category = 2;
+  double price = 3;
+  bool available = 4;
+}
+
+message MenuResponse {
+  bool success = 1;
+  string message = 2;
+  repeated MenuItem items = 3;
+}
+
+message UpdatePriceRequest {
+  string session_token = 1;
+  string item_name = 2;
+  double new_price = 3;
+}
+
+message UpdatePriceResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message CreateOrderRequest {
+  string session_token = 1;
+  OrderType type = 2;
+  int32 guests = 3;
+  int32 table_number = 4;
+  string customer_name = 5;
+}
+
+message CreateOrderResponse {
+  bool success = 1;
+  string message = 2;
+  int32 order_id = 3;
+}
+
+message AddItemRequest {
+  string session_token = 1;
+  int32 order_id = 2;
+  string item_name = 3;
+  int32 quantity = 4;
+  int32 seat_number = 5;
+}
+
+message RemoveItemRequest {
+  string session_token = 1;
+  int32 order_id = 2;
+  string item_name = 3;
+  int32 quantity = 4;
+  int32 seat_number = 5;
+}
+
+message OrderResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message SeatTotal {
+  int32 seat_number = 1;
+  double total = 2;
+  double paid = 3;
+  double remaining = 4;
+  bool fully_paid = 5;
+}
+
+message GetBillRequest {
+  string session_token = 1;
+  int32 order_id = 2;
+}
+
+message BillResponse {
+  bool success = 1;
+  string message = 2;
+  int32 order_id = 3;
+  OrderType type = 4;
+  int32 table_number = 5;
+  string customer_name = 6;
+  double total = 7;
+  double paid = 8;
+  double remaining = 9;
+  repeated SeatTotal seat_totals = 10;
+  bool fully_paid = 11;
+}
+
+message ListOrdersRequest {
+  string session_token = 1;
+}
+
+message OrderSummary {
+  int32 order_id = 1;
+  OrderType type = 2;
+  OrderStatus status = 3;
+  int32 table_number = 4;
+  int32 guests = 5;
+  string customer_name = 6;
+  double total = 7;
+  double paid = 8;
+  double remaining = 9;
+}
+
+message ListOrdersResponse {
+  bool success = 1;
+  string message = 2;
+  repeated OrderSummary orders = 3;
+}
+
+message MarkOrderReadyRequest {
+  string session_token = 1;
+  int32 order_id = 2;
+}
+
+message MarkOrderReadyResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message KitchenItem {
+  int32 kitchen_item_id = 1;
+  int32 order_id = 2;
+  int32 table_number = 3;
+  int32 seat_number = 4;
+  string customer_name = 5;
+  string item_name = 6;
+  int32 quantity = 7;
+  string timestamp = 8;
+  KitchenItemStatus status = 9;
+}
+
+message ViewKitchenQueueRequest {
+  string session_token = 1;
+  KitchenViewType view_type = 2;
+}
+
+message ViewKitchenQueueResponse {
+  bool success = 1;
+  string message = 2;
+  repeated KitchenItem items = 3;
+}
+
+message CompleteKitchenItemRequest {
+  string session_token = 1;
+  int32 kitchen_item_id = 2;
+}
+
+message CompleteKitchenItemResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message OrderItemDetail {
+  string item_name = 1;
+  int32 quantity = 2;
+  double unit_price = 3;
+  double line_total = 4;
+  int32 seat_number = 5;
+  bool sent_to_kitchen = 6;
+  KitchenItemStatus kitchen_status = 7;
+}
+
+message ViewOrderRequest {
+  string session_token = 1;
+  int32 order_id = 2;
+}
+
+message ViewOrderResponse {
+  bool success = 1;
+  string message = 2;
+  int32 order_id = 3;
+  OrderType type = 4;
+  OrderStatus status = 5;
+  int32 table_number = 6;
+  int32 guests = 7;
+  string customer_name = 8;
+  double total = 9;
+  double paid = 10;
+  double remaining = 11;
+  repeated SeatTotal seat_totals = 12;
+  repeated OrderItemDetail items = 13;
+}
+
+message CashoutRequest {
+  string session_token = 1;
+  int32 order_id = 2;
+  PaymentTargetType payment_target = 3;
+  int32 seat_number = 4;
+}
+
+message CashoutResponse {
+  bool success = 1;
+  string message = 2;
+  int32 order_id = 3;
+  double amount_charged = 4;
+  double total_paid = 5;
+  double remaining_balance = 6;
+  OrderStatus status = 7;
+}
+
+message TableInfo {
+  int32 table_number = 1;
+  int32 capacity = 2;
+  bool occupied = 3;
+  int32 order_id = 4;
+}
+
+message ListTablesRequest {
+  string session_token = 1;
+}
+
+message ListTablesResponse {
+  bool success = 1;
+  string message = 2;
+  repeated TableInfo tables = 3;
+}
+
+message WaitlistEntry {
+  int32 waitlist_id = 1;
+  string customer_name = 2;
+  int32 party_size = 3;
+  string timestamp = 4;
+}
+
+message AddToWaitlistRequest {
+  string session_token = 1;
+  string customer_name = 2;
+  int32 party_size = 3;
+}
+
+message AddToWaitlistResponse {
+  bool success = 1;
+  string message = 2;
+  int32 waitlist_id = 3;
+}
+
+message ViewWaitlistRequest {
+  string session_token = 1;
+}
+
+message ViewWaitlistResponse {
+  bool success = 1;
+  string message = 2;
+  repeated WaitlistEntry entries = 3;
+}
+
+message SeatWaitlistPartyRequest {
+  string session_token = 1;
+  int32 waitlist_id = 2;
+  int32 table_number = 3;
+}
+
+message SeatWaitlistPartyResponse {
+  bool success = 1;
+  string message = 2;
+  int32 order_id = 3;
+}
+
+service RestaurantService {
+  rpc Login(LoginRequest) returns (LoginResponse);
+
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+
+  rpc GetMenu(MenuRequest) returns (MenuResponse);
+
+  rpc UpdatePrice(UpdatePriceRequest) returns (UpdatePriceResponse);
+
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+
+  rpc AddItem(AddItemRequest) returns (OrderResponse);
+
+  rpc RemoveItem(RemoveItemRequest) returns (OrderResponse);
+
+  rpc GetBill(GetBillRequest) returns (BillResponse);
+
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
+
+  rpc MarkOrderReady(MarkOrderReadyRequest) returns (MarkOrderReadyResponse);
+
+  rpc ViewKitchenQueue(ViewKitchenQueueRequest) returns (ViewKitchenQueueResponse);
+
+  rpc CompleteKitchenItem(CompleteKitchenItemRequest) returns (CompleteKitchenItemResponse);
+
+  rpc ViewOrder(ViewOrderRequest) returns (ViewOrderResponse);
+
+  rpc Cashout(CashoutRequest) returns (CashoutResponse);
+
+  rpc ListTables(ListTablesRequest) returns (ListTablesResponse);
+
+  rpc AddToWaitlist(AddToWaitlistRequest) returns (AddToWaitlistResponse);
+
+  rpc ViewWaitlist(ViewWaitlistRequest) returns (ViewWaitlistResponse);
+
+  rpc SeatWaitlistParty(SeatWaitlistPartyRequest) returns (SeatWaitlistPartyResponse);
+}
