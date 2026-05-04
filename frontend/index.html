@@ -1,40 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Restaurant App</title>
+  <title>Restaurant System</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #1e293b;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #38bdf8;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: #38bdf8;
+      border: none;
+      border-radius: 8px;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+
+    pre {
+      background: black;
+      padding: 10px;
+      border-radius: 8px;
+      overflow-x: auto;
+      height: 200px;
+    }
+
+    .full {
+      grid-column: span 2;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Restaurant System</h1>
 
-  <h2>Login</h2>
-  <input id="username" placeholder="username" value="server2">
-  <input id="password" placeholder="password" value="pw">
-  <button onclick="login()">Login</button>
+<header>🍽️ Restaurant Management System</header>
 
-  <h2>Create Order</h2>
-  <input id="type" placeholder="dine_in or take_out">
-  <input id="table" placeholder="table number">
-  <input id="guests" placeholder="guests">
-  <input id="name" placeholder="name (takeout only)">
-  <button onclick="createOrder()">Create</button>
+<div class="container">
 
-  <h2>Add Item</h2>
-  <input id="order_id" placeholder="order id">
-  <input id="item" placeholder="item name">
-  <input id="qty" placeholder="qty">
-  <input id="seat" placeholder="seat (0 for takeout)">
-  <button onclick="addItem()">Add</button>
+  <div class="card">
+    <h2>Login</h2>
+    <input id="username" value="server2">
+    <input id="password" value="pw">
+    <button onclick="login()">Login</button>
+  </div>
 
-  <h2>View Order</h2>
-  <input id="view_id" placeholder="order id">
-  <button onclick="viewOrder()">View</button>
+  <div class="card">
+    <h2>Create Order</h2>
+    <input id="type" placeholder="dine_in or take_out">
+    <input id="table" placeholder="table number">
+    <input id="guests" placeholder="guests">
+    <input id="name" placeholder="name (takeout)">
+    <button onclick="createOrder()">Create</button>
+  </div>
 
-  <pre id="output"></pre>
+  <div class="card">
+    <h2>Add Item</h2>
+    <input id="order_id" placeholder="order id">
+    <input id="item" placeholder="item name">
+    <input id="qty" placeholder="quantity">
+    <input id="seat" placeholder="seat (0 takeout)">
+    <button onclick="addItem()">Add</button>
+  </div>
+
+  <div class="card">
+    <h2>View Order</h2>
+    <input id="view_id" placeholder="order id">
+    <button onclick="viewOrder()">View</button>
+  </div>
+
+  <div class="card full">
+    <h2>Output</h2>
+    <pre id="output"></pre>
+  </div>
+
+</div>
 
 <script>
 let token = "";
-
 const BASE = "https://p2-5-lule.onrender.com";
+
+function show(data) {
+  document.getElementById("output").innerText =
+    JSON.stringify(data, null, 2);
+}
 
 async function login() {
   const res = await fetch(BASE + "/login", {
@@ -47,7 +140,7 @@ async function login() {
   });
   const data = await res.json();
   token = data.session_token;
-  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+  show(data);
 }
 
 async function createOrder() {
@@ -63,7 +156,7 @@ async function createOrder() {
     })
   });
   const data = await res.json();
-  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+  show(data);
 }
 
 async function addItem() {
@@ -79,14 +172,14 @@ async function addItem() {
     })
   });
   const data = await res.json();
-  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+  show(data);
 }
 
 async function viewOrder() {
   const id = document.getElementById("view_id").value;
   const res = await fetch(BASE + "/orders/" + id);
   const data = await res.json();
-  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+  show(data);
 }
 </script>
 
